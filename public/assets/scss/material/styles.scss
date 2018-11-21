@@ -11,7 +11,7 @@
 @import '_content_rtl';
 @import '_helper';
 @import '_responsive';
-@import 'theme/_default';
+@import 'theme/_green';
 
 
 /* Reset and overrides */
@@ -113,3 +113,5 @@ table.dataTable thead .sorting_desc_disabled:after,
 	font-variant: normal;
 	text-rendering: auto;
 }
+
+@import 'custom_dashboard';

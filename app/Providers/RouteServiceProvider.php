@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
+use App\User;
+
 class RouteServiceProvider extends ServiceProvider
 {
     /**
@@ -24,8 +26,12 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         //
-
         parent::boot();
+
+        Route::bind('user', function ($value) {
+            return User::whereId($value)->first() ?? abort(404);
+        });
+
     }
 
     /**

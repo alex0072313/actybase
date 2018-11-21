@@ -30,7 +30,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','lastname'
+        'name', 'email', 'password','lastname', 'company_id'
     ];
 
     /**
@@ -47,4 +47,13 @@ class User extends Authenticatable
         //$this->notify(MailResetPasswordNotification::toMail($token));
         $this->notify(new \App\Notifications\MailResetPasswordNotification($token));
     }
+
+    public function company(){
+        return $this->hasOne('App\Company', 'id', 'company_id');
+    }
+
+    public function roleName(){
+        return $this->roles()->get()->first()->name;
+    }
+
 }

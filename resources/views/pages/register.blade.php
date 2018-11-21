@@ -75,9 +75,8 @@
                 <div class="checkbox checkbox-css m-b-30">
                     <input type="checkbox" id="confirm" name="confirm" data-parsley-mincheck="1">
                     <label for="confirm">
-                        Отправляя данную форму, я подтверждаю свое согласие с <a href="javascript:;" class="text-green">правилами
-                            сервиса</a>, <a href="javascript:;" class="text-green">политикой конфиденциальности</a> и <a
-                                href="javascript:;" class="text-green">Cookie</a>.
+                        Отправляя данную форму, я подтверждаю свое согласие с <a href="javascript:;" class="text-green" data-toggle="modal" data-target="#mod1">правилами
+                            сервиса</a>, <a href="javascript:;" class="text-green" data-toggle="modal" data-target="#mod2">политикой конфиденциальности и Cookie</a>.
                     </label>
                 </div>
                 @if ($errors->has('confirm'))
@@ -91,6 +90,74 @@
                 @endif
             </div>
 
+            @push('modals')
+                <!-- Правила сервиса -->
+                <div class="modal fade" id="mod1" tabindex="-1" role="dialog" aria-labelledby="mod1_long_title" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <div class="modal-title h4" id="mod1_long_title">Правила сервиса</div>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Закрыть">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>
+                                Давно выяснено, что при оценке дизайна и композиции читаемый текст мешает сосредоточиться.
+                                Lorem Ipsum используют потому, что тот обеспечивает более или менее стандартное заполнение шаблона, а также реальное распределение букв и пробелов в абзацах,
+                                которое не получается при простой дубликации "Здесь ваш текст.. Здесь ваш текст..
+                                </p>
+                                <p>
+                                Здесь ваш текст.." Многие программы электронной вёрстки и редакторы HTML используют Lorem Ipsum в качестве текста по умолчанию, так что поиск по ключевым словам
+                                "lorem ipsum" сразу показывает, как много веб-страниц всё ещё дожидаются своего настоящего рождения. За прошедшие годы текст Lorem Ipsum получил много версий.
+                                </p>
+                                <p>
+                                Некоторые версии появились по ошибке, некоторые - намеренно (например, юмористические варианты).
+                                </p>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-green" data-dismiss="modal">Ознакомился</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endpush
+
+            @push('modals')
+            <!-- Правила сервиса -->
+                <div class="modal fade" id="mod2" tabindex="-1" role="dialog" aria-labelledby="mod2_long_title" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <div class="modal-title h4" id="mod2_long_title">Политика конфиденциальности и Cookie</div>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Закрыть">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>
+                                    Давно выяснено, что при оценке дизайна и композиции читаемый текст мешает сосредоточиться.
+                                    Lorem Ipsum используют потому, что тот обеспечивает более или менее стандартное заполнение шаблона, а также реальное распределение букв и пробелов в абзацах,
+                                    которое не получается при простой дубликации "Здесь ваш текст.. Здесь ваш текст..
+                                </p>
+                                <p>
+                                    Здесь ваш текст.." Многие программы электронной вёрстки и редакторы HTML используют Lorem Ipsum в качестве текста по умолчанию, так что поиск по ключевым словам
+                                    "lorem ipsum" сразу показывает, как много веб-страниц всё ещё дожидаются своего настоящего рождения. За прошедшие годы текст Lorem Ipsum получил много версий.
+                                </p>
+                                <p>
+                                    Некоторые версии появились по ошибке, некоторые - намеренно (например, юмористические варианты).
+                                </p>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-green" data-dismiss="modal">Ознакомился</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endpush
+
             <div class="register-buttons">
                 <button type="submit" class="btn btn-green btn-block btn-lg">Регистрация</button>
             </div>
@@ -100,4 +167,5 @@
         </form>
     </div>
     <!-- end register-content -->
+
 @endsection

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Company;
 use App\Http\Requests\RegisterRequest;
+use App\Notifications\NewUserRegister;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -68,12 +70,17 @@ class RegisterController extends Controller
 
     public function register(RegisterRequest $request)
     {
-        $user = $this->create($request->all());
+        //Создаем компанию
+        $company = Company::create();
+        $user = $company->users()->create($request->all());
 
         //Назначаем роль директора
         if($role = Role::where('name', config('role.names.boss.name'))->get()){
             $user->assignRole(config('role.names.boss.name'));
         }
+
+        //Уведомление админу
+        $this->mail_to_admin_new_user($user);
 
         event(new Registered($user));
 
@@ -81,6 +88,21 @@ class RegisterController extends Controller
 
         return $this->registered($request, $user)
             ?: redirect($this->redirectPath());
+    }
+
+    protected function mail_to_admin_new_user(User $new_user){
+        $users = User::with('roles')->get();
+        $megaroots = $users->reject(function ($user, $key) {
+            if($user->hasRole('megaroot')){
+                return false;
+            }
+            return true;
+        });
+
+        foreach ($megaroots as $megaroot){
+            $megaroot->notify(new NewUserRegister($new_user));
+        }
+
     }
 
 }

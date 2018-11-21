@@ -7,7 +7,7 @@ class DashboardController extends ParentController
 {
     protected
         $title,
-        $page_title,
+        $pagetitle,
         $view,
         $data;
 
@@ -16,6 +16,10 @@ class DashboardController extends ParentController
     }
 
     public function render(){
+
+        $this->data['title'] = $this->title;
+        $this->data['pagetitle'] = $this->pagetitle ? $this->pagetitle : $this->title;
+
         return view($this->view)->with($this->data);
     }
 

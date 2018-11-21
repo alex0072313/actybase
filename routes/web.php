@@ -19,13 +19,22 @@ Route::middleware('auth')->group(function () {
     //Главная
     Route::get('/', 'Dashboard\HomeController@index')->name('home');
 
-    //Пользователь
+    //Пользователи
+    Route::get('/users/{user}/destroy', 'Dashboard\UserController@destroy')->name('users.destroy');
     Route::resource('users', 'Dashboard\UserController', [
         'names' => [
             'index' => 'user.list',
             'show' => 'user.profile',
+            'edit' => 'user.edit',
+            'update' => 'user.update',
+            'create' => 'user.add',
         ]
-    ]);
+    ])->except('destroy');
+
+    //Компания
+    Route::match(['get', 'post'], '/company', 'Dashboard\CompanyController@any')
+        ->name('user_company')
+        ->middleware('role:megaroot|boss');
 
     //Выход с кабинета
     Route::get('logout', 'Auth\LoginController@logout')->name('logout');

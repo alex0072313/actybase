@@ -7,9 +7,17 @@
             <li class="nav-profile">
                 <a href="javascript:;" data-toggle="nav-profile">
                     <div class="cover with-shadow"></div>
-                    <div class="image image-icon bg-black text-grey-darker">
-                        <i class="material-icons">person</i>
-                    </div>
+
+                    @if(Storage::disk('public')->exists('user_imgs/'.Auth::id().'/thumb_s.jpg'))
+                        <div class="image image-icon">
+                            <img src="{{ Storage::disk('public')->url('user_imgs/'.Auth::id().'/thumb_s.jpg') }}" alt="">
+                        </div>
+                    @else
+                        <div class="image image-icon bg-black text-grey-darker">
+                            <i class="material-icons">person</i>
+                        </div>
+                    @endif
+
                     <div class="info">
                         <b class="caret pull-right"></b>
                         {!! (Auth::user()->lastname ? Auth::user()->lastname.'&nbsp' : '') . Auth::user()->name !!}
@@ -33,9 +41,9 @@
                     <span>Панель управления</span>
                 </a>
             </li>
-            @role('boss')
+            @role('boss|megaroot')
                 <li class="nav-header">Компания</li>
-                <li><a href="#"><i class="fa fa-cog"></i> <span>Управление компанией</span></a></li>
+                <li><a href="{{ route('user_company') }}"><i class="fa fa-cog"></i> <span>Управление компанией</span></a></li>
                 <li><a href="{{ route('user.list') }}"><i class="fa fa-users"></i> <span>Менеджеры</span></a></li>
             @endrole
             <li class="nav-header">База</li>

@@ -47,4 +47,6 @@
 </div>
 <!-- end page container -->
 
+@stack('modals')
+
 @include('includes.foot')

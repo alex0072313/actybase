@@ -81,22 +81,3 @@ Website: http://www.seantheme.com/color-admin-v4.2/admin/
 .top-menu .nav > li.active > a:hover {
 	background: #4CAF50;
 }
-
-/* custom */
-.checkbox.checkbox-css input:checked+label:before{
-	background: #4CAF50;
-}
-.login.login-v2 .form-control{
-	background: rgba(0,0,0,.5) !important;
-	color: #fff !important;
-}
-
-.parsley-success:focus {
-	border-color: #4CAF50!important;
-	outline: 0;
-	box-shadow: 0 0 0 .125rem rgba(76, 175, 80, 0.3) !important;
-}
-
-.parsley-success{
-	border-color: #4CAF50!important;
-}

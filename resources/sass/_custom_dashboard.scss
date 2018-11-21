@@ -1,0 +1,35 @@
+/* custom */
+.checkbox.checkbox-css input:checked+label:before{
+    background: #4CAF50;
+}
+.login.login-v2 .form-control{
+    background: rgba(0,0,0,.5) !important;
+    color: #fff !important;
+}
+
+.parsley-success:focus {
+    border-color: #4CAF50!important;
+    outline: 0;
+    box-shadow: 0 0 0 .125rem rgba(76, 175, 80, 0.3) !important;
+}
+
+.parsley-success{
+    border-color: #4CAF50!important;
+}
+
+#gritter-notice-wrapper{
+    .gritter-title{
+        @extend .text-green;
+    }
+    .gritter-close:before{
+        content: '<i class="fas fa-lg fa-fw m-r-10 fa-times"></i>' !important;
+    }
+    .gritter-item p{
+        @extend .text-white;
+    }
+}
+.swal-modal{
+    .swal-footer{
+        @extend .text-center;
+    }
+}

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost
--- Время создания: Ноя 12 2018 г., 05:53
+-- Время создания: Ноя 21 2018 г., 05:25
 -- Версия сервера: 5.7.21-1ubuntu1
 -- Версия PHP: 7.2.4-1+ubuntu18.04.1+deb.sury.org+1
 
@@ -21,6 +21,32 @@ SET time_zone = "+00:00";
 --
 -- База данных: `actybase`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `companies`
+--
+
+CREATE TABLE `companies` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `tarif_id` int(11) NOT NULL DEFAULT '0',
+  `city_id` int(11) NOT NULL DEFAULT '0',
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `bestbefore` date DEFAULT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `companies`
+--
+
+INSERT INTO `companies` (`id`, `created_at`, `updated_at`, `tarif_id`, `city_id`, `name`, `description`, `bestbefore`, `status`) VALUES
+(1, '2018-11-15 16:16:29', '2018-11-20 05:34:41', 0, 0, 'dfgdfs', NULL, NULL, 1),
+(4, '2018-11-19 17:59:22', '2018-11-19 17:59:22', 0, 0, NULL, NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -46,7 +72,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (45, '2018_11_10_091516_create_users_roles_table', 1),
 (46, '2018_11_10_092205_create_roles_permissions_table', 1),
 (47, '2014_10_12_100000_create_password_resets_table', 2),
-(48, '2018_11_10_100504_create_permission_tables', 3);
+(48, '2018_11_10_100504_create_permission_tables', 3),
+(49, '2018_11_15_160557_create_companies_table', 4),
+(50, '2018_11_15_161354_user_to_company', 5);
 
 -- --------------------------------------------------------
 
@@ -78,7 +106,13 @@ CREATE TABLE `model_has_roles` (
 
 INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
 (2, 'App\\User', 2),
-(3, 'App\\User', 4);
+(3, 'App\\User', 4),
+(4, 'App\\User', 8),
+(3, 'App\\User', 10),
+(3, 'App\\User', 11),
+(4, 'App\\User', 11),
+(3, 'App\\User', 12),
+(4, 'App\\User', 13);
 
 -- --------------------------------------------------------
 
@@ -169,20 +203,30 @@ CREATE TABLE `users` (
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `company_id` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Дамп данных таблицы `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `lastname`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(2, 'Алексей', 'Андрос', 'alex.andros@yandex.ru', NULL, '$2y$10$jiwfiUyN47MsW7MlEQm4hOeZqWQkmfFTfrZRk6LaHYe6Z5mRwfjn6', 'XJEL2Qj8e1H4gVwTY8UCA8NiOografODN2g6cOQ4ng96Bgxwe5G3velDTdni', '2018-11-10 10:00:42', '2018-11-10 10:00:42'),
-(4, 'Саша', 'Сашко', 'mail@mail.ru', NULL, '$2y$10$CnkwwePAGBDm5SctLpNo6uIbwfjdlAJXYy/Ps1iTByHsw.ebCnKnC', NULL, '2018-11-10 12:05:50', '2018-11-10 12:05:50');
+INSERT INTO `users` (`id`, `name`, `lastname`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `company_id`) VALUES
+(2, 'Алексей', 'Андрос', 'alex.andros@yandex.ru', NULL, '$2y$10$jiwfiUyN47MsW7MlEQm4hOeZqWQkmfFTfrZRk6LaHYe6Z5mRwfjn6', 'XJEL2Qj8e1H4gVwTY8UCA8NiOografODN2g6cOQ4ng96Bgxwe5G3velDTdni', '2018-11-10 10:00:42', '2018-11-10 10:00:42', 0),
+(4, 'Саша', 'Сашко', 'mail@mail.ru', NULL, '$2y$10$DmsUveaVkukwhrbYoyMwXOTbyohwyEUKQuqBF4eUI5.MGk5GA9ypO', 'txn6HCbgl8D3reSONAnLFCQB9vzmCHR4kSRzAcq44ZKFRHq75HEOaimbcWI4', '2018-11-10 12:05:50', '2018-11-15 16:00:54', 1),
+(8, 'Иван', NULL, 'sdfsd@mail.ru', NULL, '$2y$10$D0MN1X9pFXOAaSbuvI7HFeJp9dXwqtp4mKckxHStswzvZynQ1.J.S', NULL, '2018-11-19 16:39:23', '2018-11-19 16:39:23', 1),
+(12, 'Вася', 'Пупкин', 'sdfsdf@mail.ru', NULL, '123456', NULL, '2018-11-19 17:59:22', '2018-11-19 17:59:22', 4),
+(13, 'Илья', NULL, 'sdfsddddf@mail.ru', NULL, '$2y$10$i46L2TqzVb7r9kbUFu78eeUzSenhP6yKqxUCMO8CVDIUsQU0wY5wW', NULL, '2018-11-19 18:00:42', '2018-11-19 18:00:42', 4);
 
 --
 -- Индексы сохранённых таблиц
 --
+
+--
+-- Индексы таблицы `companies`
+--
+ALTER TABLE `companies`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Индексы таблицы `migrations`
@@ -241,10 +285,16 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT для таблицы `companies`
+--
+ALTER TABLE `companies`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT для таблицы `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT для таблицы `permissions`
@@ -262,7 +312,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
