@@ -25,12 +25,14 @@
                     <form action="{{ route('user_company') }}" method="post" enctype="multipart/form-data" class="form-horizontal form-bordered" data-parsley-validate="true">
                         @csrf
 
-                        <div class="form-group row">
-                            <label class="col-form-label col-md-3">Активна до</label>
-                            <div class="col-md-9">
-                                <input type="text" disabled readonly="" class="form-control-plaintext" value="{{ $company->bestbefore }}">
+                        @if($company->bestbefore)
+                            <div class="form-group row">
+                                <label class="col-form-label col-md-3">Активна до</label>
+                                <div class="col-md-9">
+                                    <input type="text" disabled readonly="" class="form-control-plaintext" value="{{ $company->bestbefore }}">
+                                </div>
                             </div>
-                        </div>
+                        @endif
 
                         <div class="form-group row">
                             <label class="col-form-label col-md-3">Название компании</label>

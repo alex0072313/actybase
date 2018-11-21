@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
 use App\User;
+use Auth;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -29,7 +30,33 @@ class RouteServiceProvider extends ServiceProvider
         parent::boot();
 
         Route::bind('user', function ($value) {
-            return User::whereId($value)->first() ?? abort(404);
+
+            $user = User::whereId($value)->first();
+
+            if($user) {
+                if (!Auth::user()->hasRole('megaroot')) {
+
+                    if($user->hasRole('megaroot')){
+                        return abort(403);
+                    }
+
+                    if (($user->id != Auth::id()) && Auth::user()->hasRole('boss')) {
+                        if ($user->company->id == Auth::user()->company->id) {
+                            return $user;
+                        }else{
+                            return abort(404);
+                        }
+                    }elseif ($user->id == Auth::id()){
+                        return $user;
+                    }else{
+                        return abort(403);
+                    }
+                }else{
+                    return $user;
+                }
+            }else {
+                return abort(404);
+            };
         });
 
     }
