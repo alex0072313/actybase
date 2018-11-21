@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Dashboard\DashboardController;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Auth;
 
-class LoginController extends Controller
+class LoginController extends DashboardController
 {
     /*
     |--------------------------------------------------------------------------
@@ -27,7 +28,6 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
 
     /**
      * Create a new controller instance.
@@ -42,7 +42,10 @@ class LoginController extends Controller
 
     public function showLoginForm()
     {
-        return view('pages.login');
+        $this->view = 'pages.login';
+        $this->title = 'Вход в панель управления';
+
+        return $this->render();
     }
 
     public function logout(Request $request)

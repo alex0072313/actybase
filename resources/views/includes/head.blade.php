@@ -5,7 +5,7 @@
 <!--<![endif]-->
 <head>
     <meta charset="utf-8" />
-    <title>Color Admin | Dashboard</title>
+    <title>{{ isset($title) ? $title.' | ' : '' }}{{ config('app.name') }}</title>
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 

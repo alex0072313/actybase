@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Company;
+use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Requests\RegisterRequest;
 use App\Notifications\NewUserRegister;
 use App\User;
@@ -13,7 +14,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Auth\Events\Registered;
 use Spatie\Permission\Models\Role;
 
-class RegisterController extends Controller
+class RegisterController extends DashboardController
 {
     /*
     |--------------------------------------------------------------------------
@@ -33,7 +34,6 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
 
     /**
      * Create a new controller instance.
@@ -49,7 +49,10 @@ class RegisterController extends Controller
 
     public function showRegistrationForm()
     {
-        return view('pages.register');
+        $this->view = 'pages.register';
+        $this->title = 'Регистрация новго пользователя';
+
+        return $this->render();
     }
 
     /**

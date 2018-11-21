@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Dashboard\DashboardController;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 
-class ForgotPasswordController extends Controller
+class ForgotPasswordController extends DashboardController
 {
     /*
     |--------------------------------------------------------------------------
@@ -32,6 +33,9 @@ class ForgotPasswordController extends Controller
 
     public function showLinkRequestForm()
     {
-        return view('pages.password_recover');
+        $this->view = 'pages.password_recover';
+        $this->title = 'Восстановление пароля';
+
+        return $this->render();
     }
 }
