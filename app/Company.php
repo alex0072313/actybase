@@ -10,6 +10,8 @@ class Company extends Model
 
     protected $guarded = ['id'];
 
+    protected $hidden = ['logo'];
+
     public function users(){
         return $this->hasMany('App\User');
     }

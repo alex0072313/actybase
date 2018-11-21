@@ -21,6 +21,7 @@ class UserController extends DashboardController
     public function __construct()
     {
         $this->middleware(['role:boss|megaroot'])->only(['create', 'index', 'store', 'destroy']);
+        parent::__construct();
     }
 
     /**

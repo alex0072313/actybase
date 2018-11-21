@@ -16,7 +16,7 @@ class HomeController extends DashboardController
      */
     public function __construct()
     {
-
+        parent::__construct();
     }
 
     /**

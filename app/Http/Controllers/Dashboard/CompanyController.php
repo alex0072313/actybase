@@ -7,9 +7,16 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Auth;
 use Validator;
+use App\Repositories\CompanyRepository;
 
 class CompanyController extends DashboardController
 {
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     protected $company;
 
     public function any(Request $request){
@@ -49,7 +56,12 @@ class CompanyController extends DashboardController
 
         // Валидация прошла ..
 
-        if($this->company->update($request->toArray())){
+        //Фото
+        if($img = $request->file('logo')){
+            CompanyRepository::createThumb($img, $this->company);
+        }
+
+        if($this->company->update($request->except(['logo']))){
             return redirect()
                 ->back()
                 ->with('company_success', 'Данные успешно обновлены!');
