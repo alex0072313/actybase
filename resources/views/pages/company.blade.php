@@ -29,7 +29,7 @@
                             <div class="form-group row">
                                 <label class="col-form-label col-md-3">Активна до</label>
                                 <div class="col-md-9">
-                                    <input type="text" disabled readonly="" class="form-control-plaintext" value="{{ $company->bestbefore }}">
+                                    <input type="text" disabled readonly="" class="form-control-plaintext text-green" value="{{ $company->bestbefore }}">
                                 </div>
                             </div>
                         @endif

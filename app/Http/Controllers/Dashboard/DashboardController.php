@@ -7,6 +7,7 @@ use Spatie\Permission\Models\Role;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Request;
 
 abstract class DashboardController extends ParentController
 {
@@ -29,17 +30,21 @@ abstract class DashboardController extends ParentController
 
             if($this->company){
                 if($this->company->bestbefore){
-                    if(Carbon::createFromFormat($this->company->bestbefore) > Carbon::now()){
-                        return redirect()
-                            ->route('home')
-                            ->with('company_innactive', $this->company);
-                    }
-                }else{
-                    return redirect()
-                        ->route('home')
-                        ->with('company_innactive', $this->company);
-                }
+                    $bestbefore = new Carbon($this->company->bestbefore);
 
+                    if($bestbefore < Carbon::now()){
+
+                        if(Request::route()->getName() != 'home'){
+                            return redirect()
+                                ->route('home')
+                                ->with('company_innactive', $this->company);
+                        }else{
+                            session(['company_innactive'=> $this->company]);
+                        }
+                    }else{
+                        session(['company_innactive'=> '']);
+                    }
+                }
             }
 
             return $next($request);
