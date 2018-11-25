@@ -3,6 +3,6 @@
         <h4 class="panel-title">Остановка работы компании</h4>
     </div>
     <div class="panel-body">
-        Срок действия Вашей компании истек <span class="label label-yellow h6">{{ $company->bestbefore }}</span> Для дальнейшей работы необходимо продление.
+        Срок действия Вашей компании истек{!! $company->bestbefore ? ' <span class="label label-yellow h6">'.$company->bestbefore.'</span>' : '' !!}. Для дальнейшей работы необходимо продление.
     </div>
 </div>

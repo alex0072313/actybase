@@ -214,15 +214,113 @@ class UserController extends DashboardController
     public function destroy(User $user)
     {
         if($user->delete()){
-            Storage::disk('public')->deleteDirectory('user_imgs/'.$user->id);
             return redirect()
                 ->back()
                 ->with('gritter', [
                     'title' => 'Менеджер был удален!',
                     'msg'=> 'Вы только что удалили менеджера '.$user->name
                 ]);
+        }
+    }
+
+    public function _list(){
+        $this->view = 'pages.user._list';
+        $this->title = 'Все пользователи';
+
+        $users = User::rightJoin('companies', 'users.company_id', '=', 'companies.id')
+            ->orderBy('companies.name', 'asc')
+            ->select('users.*')
+            ->get();
+
+        $this->data['users'] = $users;
+
+        return $this->render();
+    }
+
+    public function _edit(User $user)
+    {
+        $this->view = 'pages.user._edit';
+        $this->title = 'Редактировать профиль';
+
+        $this->data['user'] = $user;
+
+        return $this->render();
+    }
+
+    public function _update(Request $request, User $user)
+    {
+        if(!$request->get('change_password')){
+
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|max:255',
+                'email' => 'required|email|unique:users,email,'.$user->id,
+                'avatar' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+
+            if($validator->fails()) {
+                return redirect()
+                    ->back()
+                    ->withErrors($validator)
+                    ->withInput()
+                    ->with('user_primary_error', 'Ошибка при обновлении данных!');
+            }
+
+            // Валидация прошла ..
+
+            if($request->get('role') && config('role.names.'.$request->get('role').'.name')){
+                foreach ($user->roles as $role){
+                    $user->removeRole($role->name);
+                }
+                $user->assignRole($request->get('role'));
+            }
+
+            //Фото
+            if($img = $request->file('avatar')){
+                UserRepository::createThumb($img, $user);
+            }
+
+            if($user->update($request->toArray())){
+                return redirect()
+                    ->back()
+                    ->with('user_primary_success', 'Данные успешно обновлены!');
+            }
+        }else{
+
+            $validator = Validator::make($request->all(), [
+                'password' => 'required|min:6|confirmed',
+            ]);
+
+            if($validator->fails()) {
+                return redirect()
+                    ->back()
+                    ->withErrors($validator)
+                    ->withInput()
+                    ->with('user_pass_error', 'Ошибка при обновлении пароля!');
+            }
+
+            // Валидация прошла ..
+            if($user->update(['password' => Hash::make($request->get('password'))])){
+                return redirect()
+                    ->back()
+                    ->with('user_pass_success', 'Пароль успешно обновлен!');
+            }
 
         }
     }
+
+    public function _destroy(User $user)
+    {
+        if($user->delete()){
+            return redirect()
+                ->route('_user_list')
+                ->with('gritter', [
+                    'title' => 'Менеджер был удален!',
+                    'msg'=> 'Вы только что удалили менеджера '.$user->name
+                ]);
+        }
+    }
+
+
+
 
 }

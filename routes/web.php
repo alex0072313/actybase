@@ -12,6 +12,18 @@
 */
 Route::group(['middleware' => ['role:megaroot']], function () {
 
+    //Список компаний
+    Route::get('/_companies', 'Dashboard\CompanyController@_list')->name('_company_list');
+    Route::get('/_companies/{company}', 'Dashboard\CompanyController@_edit')->name('_company_edit');
+    Route::post('/_companies/{company}', 'Dashboard\CompanyController@_update')->name('_company_update');
+    Route::get('/_companies/{company}/destroy', 'Dashboard\CompanyController@_destroy')->name('_company_destroy');
+
+    //Список пользователей
+    Route::get('/_users', 'Dashboard\UserController@_list')->name('_user_list');
+    Route::get('/_users/{user}', 'Dashboard\UserController@_edit')->name('_user_edit');
+    Route::post('/_users/{user}', 'Dashboard\UserController@_update')->name('_user_update');
+    Route::get('/_users/{user}/destroy', 'Dashboard\UserController@_destroy')->name('_user_destroy');
+
 });
 
 Route::middleware('auth')->group(function () {

@@ -29,11 +29,25 @@ abstract class DashboardController extends ParentController
             }
 
             if($this->company){
-                if($this->company->bestbefore){
+
+                //статус - не активна
+                if(!$this->company->status){
+                    if(Request::route()->getName() != 'home'){
+                        return redirect()
+                            ->route('home')
+                            ->with('company_status_off', $this->company);
+                    }else{
+                        session(['company_status_off'=> $this->company]);
+                    }
+                }else{
+                    session(['company_status_off'=> '']);
+                }
+
+                //статус активно но время работы истекло
+                if($this->company->status){
                     $bestbefore = new Carbon($this->company->bestbefore);
-
+                    
                     if($bestbefore < Carbon::now()){
-
                         if(Request::route()->getName() != 'home'){
                             return redirect()
                                 ->route('home')

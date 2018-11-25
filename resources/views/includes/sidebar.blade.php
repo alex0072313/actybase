@@ -36,40 +36,50 @@
         <ul class="nav">
 
             <li class="active">
-                <a href="index.html">
+                <a href="{{ route('home') }}">
                     <i class="material-icons">home</i>
-                    <span>Панель управления</span>
+                    <span>Главная</span>
                 </a>
             </li>
-            @role('boss|megaroot')
+
+            @role('megaroot')
+                <li><a href="{{ route('_company_list') }}"><i class="fa fa-briefcase"></i> <span>Компании</span></a></li>
+                <li><a href="{{ route('_user_list') }}"><i class="fa fa-users"></i> <span>Пользователи</span></a></li>
+            @endrole
+
+            @role('boss')
                 <li class="nav-header">Компания</li>
                 <li><a href="{{ route('user_company') }}"><i class="fa fa-cog"></i> <span>Управление компанией</span></a></li>
                 <li><a href="{{ route('user.list') }}"><i class="fa fa-users"></i> <span>Менеджеры</span></a></li>
             @endrole
-            <li class="nav-header">База</li>
 
-            <li class="has-sub">
-                <a href="javascript:;">
-                    <b class="caret"></b>
-                    <i class="material-icons">business</i>
-                    <span>Обьекты</span>
-                </a>
-                <ul class="sub-menu">
-                    <li><a href="javascript:;">Квартиры</a></li>
-                    <li><a href="javascript:;">Студии <small><i class="fa fa-plus text-theme m-l-5"></i></small></a></li>
-                    <li><a href="javascript:;">Пентхаусы <small><i class="fa fa-plus text-theme m-l-5"></i></small></a></li>
-                    <li><a href="javascript:;">Ком. помещения <small><i class="fa fa-plus text-theme m-l-5"></i></small></a></li>
-                    <li><a href="javascript:;">Дома</a></li>
-                    <li><a href="javascript:;">Земельные участки</a></li>
-                </ul>
-            </li>
+            @role('boss|manager')
+                <li class="nav-header">База</li>
 
-            <li class="has-sub">
-                <a href="#">
-                    <i class="material-icons">contacts</i>
-                    <span>Клиенты</span>
-                </a>
-            </li>
+                <li class="has-sub">
+                    <a href="javascript:;">
+                        <b class="caret"></b>
+                        <i class="material-icons">business</i>
+                        <span>Обьекты</span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li><a href="javascript:;">Квартиры</a></li>
+                        <li><a href="javascript:;">Студии <small><i class="fa fa-plus text-theme m-l-5"></i></small></a></li>
+                        <li><a href="javascript:;">Пентхаусы <small><i class="fa fa-plus text-theme m-l-5"></i></small></a></li>
+                        <li><a href="javascript:;">Ком. помещения <small><i class="fa fa-plus text-theme m-l-5"></i></small></a></li>
+                        <li><a href="javascript:;">Дома</a></li>
+                        <li><a href="javascript:;">Земельные участки</a></li>
+                    </ul>
+                </li>
+                <li class="has-sub">
+                    <a href="#">
+                        <i class="material-icons">contacts</i>
+                        <span>Клиенты</span>
+                    </a>
+                </li>
+            @endrole
+
+
             <!-- begin sidebar minify button -->
             <li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="fa fa-angle-double-left"></i></a></li>
             <!-- end sidebar minify button -->

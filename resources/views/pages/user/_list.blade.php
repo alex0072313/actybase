@@ -2,16 +2,16 @@
 
 @section('content')
 
-    <a href="{{ route('user.add') }}" class="btn btn-green btn-lg mb-4">Добавить менеджера</a>
+    {{--<a href="{{ route('user.add') }}" class="btn btn-green btn-lg mb-4">Добавить менеджера</a>--}}
 
-    @if($managers)
+    @if($users)
         <!-- begin panel -->
         <div class="panel panel-inverse">
             <div class="panel-heading">
                 <div class="panel-heading-btn">
                     <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
                 </div>
-                <h4 class="panel-title">Основная команда</h4>
+                <h4 class="panel-title">Все пользователи</h4>
             </div>
 
             <!-- begin panel-body -->
@@ -24,27 +24,31 @@
                             <th></th>
                             <th>Имя</th>
                             <th>Email</th>
+                            <th>Компания</th>
+                            <th>Роль</th>
                             <th width="1%"></th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($managers as $manager)
+                        @foreach($users as $user)
                             <tr>
                                 <td class="with-img width-40 pr-0">
-                                    @if(Storage::disk('public')->exists('user_imgs/'.$manager->id.'/thumb_xs.jpg'))
-                                        <a href="{{ route('user.edit', $manager->id) }}" class="text-green">
-                                            <img src="{{ Storage::disk('public')->url('user_imgs/'.$manager->id.'/thumb_xs.jpg') }}"
+                                    @if(Storage::disk('public')->exists('user_imgs/'.$user->id.'/thumb_xs.jpg'))
+                                        <a href="{{ route('_user_edit', $user->id) }}" class="text-green">
+                                            <img src="{{ Storage::disk('public')->url('user_imgs/'.$user->id.'/thumb_xs.jpg') }}"
                                                  class="rounded-circle"/>
                                         </a>
                                     @endif
                                 </td>
-                                <td><a href="{{ route('user.edit', $manager->id) }}"
-                                       class="text-green">{!! ($manager->lastname ? $manager->lastname.'&nbsp' : '') . $manager->name !!}</a>
+                                <td><a href="{{ route('_user_edit', $user->id) }}"
+                                       class="text-green">{!! ($user->lastname ? $user->lastname.'&nbsp' : '') . $user->name !!}</a>
                                 </td>
-                                <td>{{ $manager->email }}</td>
+                                <td>{{ $user->email }}</td>
+                                <td><a href="{{ route('_company_edit', $user->company->id) }}" class="text-green">{{ $user->company->name }}</a></td>
+                                <td>{{ $user->roleName() }}</td>
                                 <td class="with-btn" nowrap>
-                                    <a href="{{ route('user.edit', $manager->id) }}" class="btn btn-sm btn-green m-r-2">Профиль</a>
-                                    <a href="{{ route('users.destroy', $manager->id) }}" data-click="swal-warning" data-title="Подтвердите действие" data-text="Удалить пользователя {{ $manager->name }}?" data-classbtn="danger" data-actionbtn="Удалить" data-type="error" class="btn btn-sm btn-danger">Удалить</a>
+                                    <a href="{{ route('_user_edit', $user->id) }}" class="btn btn-sm btn-green m-r-2">Изменить</a>
+                                    <a href="{{ route('_user_destroy', $user->id) }}" data-click="swal-warning" data-title="Подтвердите действие" data-text="Удалить пользователя {{ $user->name }}?" data-classbtn="danger" data-actionbtn="Удалить" data-type="error" class="btn btn-sm btn-danger">Удалить</a>
                                 </td>
                             </tr>
                         @endforeach

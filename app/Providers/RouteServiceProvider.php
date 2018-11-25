@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Company;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
@@ -28,6 +29,10 @@ class RouteServiceProvider extends ServiceProvider
     {
         //
         parent::boot();
+
+        Route::bind('company', function ($value) {
+            return Company::whereId($value)->first();
+        });
 
         Route::bind('user', function ($value) {
 

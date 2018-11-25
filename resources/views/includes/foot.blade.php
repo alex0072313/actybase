@@ -12,11 +12,14 @@
     <script src="/assets/plugins/js-cookie/js.cookie.js"></script>
     <script src="/assets/js/theme/material.min.js"></script>
     <script src="/assets/js/apps.min.js"></script>
+
+    <script src="/assets/js/custom.js"></script>
     <!-- ================== END BASE JS ================== -->
 
     <script>
         $(document).ready(function() {
             App.init();
+
             @stack('docready')
         });
     </script>

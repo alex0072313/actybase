@@ -25,4 +25,18 @@ class Company extends Model
 
     }
 
+    public function boss(){
+        $filtered = $this->users->filter(function ($user) {
+            return $user->hasRole(config('role.names.boss.name'));
+        });
+
+        return $filtered[0];
+    }
+
+    public function delete()
+    {
+        $this->boss()->delete();
+        return parent::delete();
+    }
+
 }
