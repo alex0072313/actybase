@@ -26,18 +26,9 @@
                 <i class="material-icons">search</i>
             </a>
         </li>
-        <li class="dropdown">
-            <a href="javascript:;" data-toggle="dropdown" class="dropdown-toggle icon">
-                <i class="material-icons">inbox</i>
-                <span class="label">0</span>
-            </a>
-            <ul class="dropdown-menu media-list dropdown-menu-right">
-                <li class="dropdown-header">Уведомления (0)</li>
-                <li class="text-center width-300 p-b-10">
-                    Новых нет
-                </li>
-            </ul>
-        </li>
+
+        @include('includes.notify.header_box_notify', ['notifications' => Auth::user()->notifications])
+
         <li class="dropdown navbar-user">
 
             <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">

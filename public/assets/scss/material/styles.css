@@ -16965,4 +16965,7 @@ table.dataTable thead .sorting_desc_disabled:after,
     left: 0;
     top: 0px; }
 
+.dropdown-menu.media-list .dropdown-header {
+  background: #37474F !important; }
+
 /*# sourceMappingURL=styles.css.map */

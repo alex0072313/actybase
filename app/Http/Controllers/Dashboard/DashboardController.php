@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller as ParentController;
+use App\Repositories\NotificationRepository;
 use Carbon\Carbon;
 use Spatie\Permission\Models\Role;
 use App\User;
@@ -29,9 +30,12 @@ abstract class DashboardController extends ParentController
             }
 
             if($this->company){
-
                 //статус - не активна
                 if(!$this->company->status){
+
+                    //отправляем уведомление
+                    NotificationRepository::CompanyStatusInnactive(Auth::user());
+
                     if(Request::route()->getName() != 'home'){
                         return redirect()
                             ->route('home')
@@ -46,8 +50,12 @@ abstract class DashboardController extends ParentController
                 //статус активно но время работы истекло
                 if($this->company->status){
                     $bestbefore = new Carbon($this->company->bestbefore);
-                    
+
                     if($bestbefore < Carbon::now()){
+
+                        //отправляем уведомление
+                        NotificationRepository::CompanyBestbeforeSoonEnd(Auth::user(), $this->company);
+
                         if(Request::route()->getName() != 'home'){
                             return redirect()
                                 ->route('home')
@@ -58,6 +66,8 @@ abstract class DashboardController extends ParentController
                     }else{
                         session(['company_innactive'=> '']);
                     }
+
+
                 }
             }
 

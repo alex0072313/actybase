@@ -49,7 +49,7 @@
 
             @role('boss')
                 <li class="nav-header">Компания</li>
-                <li><a href="{{ route('user_company') }}"><i class="fa fa-cog"></i> <span>Управление компанией</span></a></li>
+                <li><a href="{{ route('user_company') }}"><i class="fa fa-briefcase"></i> <span>Управление компанией</span></a></li>
                 <li><a href="{{ route('user.list') }}"><i class="fa fa-users"></i> <span>Менеджеры</span></a></li>
             @endrole
 
