@@ -27,7 +27,7 @@
             </a>
         </li>
 
-        @include('includes.notify.header_box_notify', ['notifications' => Auth::user()->notifications])
+        @include('includes.notify.header_box_notify')
 
         <li class="dropdown navbar-user">
 

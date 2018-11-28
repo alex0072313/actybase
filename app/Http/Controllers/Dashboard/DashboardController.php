@@ -51,10 +51,15 @@ abstract class DashboardController extends ParentController
                 if($this->company->status){
                     $bestbefore = new Carbon($this->company->bestbefore);
 
+                    if($bestbefore < Carbon::now()->addWeek()){
+                        //отправляем уведомление о скором окончании
+                        NotificationRepository::CompanyBestbeforeSoonEnd(Auth::user(), $this->company);
+                    }
+
                     if($bestbefore < Carbon::now()){
 
-                        //отправляем уведомление
-                        NotificationRepository::CompanyBestbeforeSoonEnd(Auth::user(), $this->company);
+                        //отправляем уведомление об окончании
+                        NotificationRepository::CompanyBestbeforeEnd(Auth::user());
 
                         if(Request::route()->getName() != 'home'){
                             return redirect()

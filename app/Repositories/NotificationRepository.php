@@ -8,6 +8,7 @@ use App\User;
 use Image;
 use Storage;
 use Auth;
+use Carbon;
 
 abstract class NotificationRepository extends Repository
 {
@@ -18,7 +19,22 @@ abstract class NotificationRepository extends Repository
             return false;
         }
 
-        $user->addNotification('user_company_bestbefore_soon_end', 'Предупреждение о работе компании', 'Срок дейстявия вашей компании закончится '.$company->bestbefore.'. Для продления обратитесь к администратору сервиса.');
+        $user->addNotification('user_company_bestbefore_soon_end',
+            'Работа компании',
+            'Срок действия Вашей компании закончится '.Carbon::parse($company->bestbefore)->toFormattedDateString().'. Для продления обратитесь к администратору сервиса.',
+            1);
+    }
+
+    public static function CompanyBestbeforeEnd(User $user){
+
+        if($user->checkNotify('user_company_bestbefore_end')){
+            return false;
+        }
+
+        $user->addNotification('user_company_bestbefore_end',
+            'Остановка компании',
+            'Срок действия Вашей компании истек. Для продления обратитесь к администратору сервиса.',
+            0);
     }
 
     public static function CompanyStatusInnactive(User $user){
@@ -27,8 +43,22 @@ abstract class NotificationRepository extends Repository
             return false;
         }
 
-        $user->addNotification('user_company_innactive', 'Изменение статуса компании', 'Ваша компания помечена как неактивная. Обратитесь к администратору сервиса.');
+        $user->addNotification('user_company_innactive',
+            'Отключение компании',
+            'Ваша компания помечена как неактивная. Обратитесь к администратору сервиса.');
 
+    }
+
+    public static function CompanyBestbeforeStart(User $user, Company $company){
+
+        if($user->checkNotify('user_company_bestbefore_start')){
+            return false;
+        }
+
+        $user->addNotification('user_company_bestbefore_start',
+            'Активация компании',
+            'Ваша компания снова активна. Срок действия до '.Carbon::parse($company->bestbefore)->toFormattedDateString(),
+            2);
     }
 
 
