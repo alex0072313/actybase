@@ -35,6 +35,14 @@ Breadcrumbs::for('categories.index', function ($trail) {
     $trail->parent('home');
     $trail->push('Категории обьектов', route('categories.index'));
 });
+Breadcrumbs::for('categories.edit', function ($trail, $category) {
+    $trail->parent('categories.index');
+    $trail->push('Редактирование категории', route('categories.edit', $category->id));
+});
+Breadcrumbs::for('categories.create', function ($trail) {
+    $trail->parent('categories.index');
+    $trail->push('Создание категории', route('categories.create'));
+});
 //
 
 Breadcrumbs::for('user_company', function ($trail) {

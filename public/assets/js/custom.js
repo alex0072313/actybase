@@ -63,7 +63,10 @@ $(document).ready(function () {
     }
     if($('.default-select2').length){
         $(".default-select2").select2({
-            minimumResultsForSearch: -1
+            minimumResultsForSearch: -1,
+            placeholder: function(){
+                $(this).data('placeholder');
+            }
         })
     }
 

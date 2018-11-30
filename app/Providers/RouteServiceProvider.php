@@ -34,6 +34,11 @@ class RouteServiceProvider extends ServiceProvider
             return Company::whereId($value)->first();
         });
 
+        $this->userAccess();
+
+    }
+
+    protected function userAccess(){
         Route::bind('user', function ($value) {
 
             $user = User::whereId($value)->first();
@@ -63,6 +68,9 @@ class RouteServiceProvider extends ServiceProvider
                 return abort(404);
             };
         });
+    }
+
+    protected function categoryAccess(){
 
     }
 

@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <a href="" class="btn btn-green btn-lg mb-4">Добавить категорию</a>
+    <a href="{{ route('categories.create') }}" class="btn btn-green btn-lg mb-4">Добавить категорию</a>
 
     @if($categories)
         <!-- begin panel -->
@@ -35,10 +35,15 @@
                                 @role('megaroot')
                                     <td><a class="text-green" href="{{ route('user.edit', $category->user->id) }}">{{ $category->user->name }}</a></td>
                                 @endrole
-                                {{--<td class="with-btn" nowrap>--}}
-                                    {{--<a href="{{ route('user.edit', $manager->id) }}" class="btn btn-sm btn-green m-r-2">Профиль</a>--}}
-                                    {{--<a href="{{ route('users.destroy', $manager->id) }}" data-click="swal-warning" data-title="Подтвердите действие" data-text="Удалить пользователя {{ $manager->name }}?" data-classbtn="danger" data-actionbtn="Удалить" data-type="error" class="btn btn-sm btn-danger">Удалить</a>--}}
-                                {{--</td>--}}
+
+                                <td class="with-btn" nowrap>
+                                    @if(Auth::user()->can('access', $category))
+                                        <a href="{{ route('categories.edit', $category->id) }}" class="btn btn-sm btn-green m-r-2">Изменить</a>
+                                        <a href="{{ route('categories.destroy', $category->id) }}" data-click="swal-warning" data-title="Подтвердите действие" data-text="Удалить категорию {{ $category->name }}{{ $category->childs()->count() ? ' и ее потомков':'' }}?" data-classbtn="danger" data-actionbtn="Удалить" data-type="error" class="btn btn-sm btn-danger">Удалить</a>
+                                    @else
+                                        <span class="label label-secondary">Нет доступа к изменению</span>
+                                    @endif
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>

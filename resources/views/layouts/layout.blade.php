@@ -1,6 +1,7 @@
 @push('css')
     <link href="/assets/plugins/parsley/src/parsley.css" rel="stylesheet" />
     <link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+    <link href="/assets/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
 @endpush
 
 @push('js')
@@ -10,6 +11,8 @@
     <script src="/assets/plugins/highlight/highlight.common.js"></script>
     <script src="/assets/js/demo/render.highlight.js"></script>
     <script src="/assets/plugins/bootstrap-sweetalert/sweetalert.min.js"></script>
+    <script src="/assets/plugins/bootstrap-show-password/bootstrap-show-password.js"></script>
+    <script src="/assets/plugins/select2/dist/js/select2.min.js"></script>
 @endpush
 
 @push('docready')

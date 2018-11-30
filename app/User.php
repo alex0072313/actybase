@@ -86,4 +86,12 @@ class User extends Authenticatable
         return $this->notifications()->where('key', $key)->count();
     }
 
+    public static function getAdmin(){
+        $filtered = User::all()->filter(function ($user) {
+            return $user->hasRole(config('role.names.megaroot.name'));
+        });
+
+        return $filtered[0];
+    }
+
 }

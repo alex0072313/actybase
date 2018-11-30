@@ -1,12 +1,3 @@
-@push('css')
-    <link href="/assets/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
-@endpush
-
-@push('js')
-    <script src="/assets/plugins/bootstrap-show-password/bootstrap-show-password.js"></script>
-    <script src="/assets/plugins/select2/dist/js/select2.min.js"></script>
-@endpush
-
 @extends('layouts.layout')
 
 @section('content')

@@ -49,7 +49,11 @@ Route::middleware('auth')->group(function () {
         ->middleware('role:megaroot|boss');
 
     //Категории обьектов
-    Route::resource('categories', 'Dashboard\CategoryController');
+    Route::middleware('role:megaroot|boss')->group(function () {
+        Route::get('/categories/{category}/destroy', 'Dashboard\CategoryController@destroy')->name('categories.destroy');
+        Route::resource('categories', 'Dashboard\CategoryController')
+            ->except(['destroy', 'show']);
+    });
 
     //Выход с кабинета
     Route::get('logout', 'Auth\LoginController@logout')->name('logout');
