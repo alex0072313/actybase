@@ -28,7 +28,13 @@ Breadcrumbs::for('_user_edit', function ($trail, $user) {
     $trail->parent('_user_list');
     $trail->push('Редактирование пользователя', route('_user_edit', $user));
 });
+//
 
+//Категории
+Breadcrumbs::for('categories.index', function ($trail) {
+    $trail->parent('home');
+    $trail->push('Категории обьектов', route('categories.index'));
+});
 //
 
 Breadcrumbs::for('user_company', function ($trail) {

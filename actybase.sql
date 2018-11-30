@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost
--- Время создания: Ноя 21 2018 г., 05:25
+-- Время создания: Ноя 30 2018 г., 05:48
 -- Версия сервера: 5.7.21-1ubuntu1
 -- Версия PHP: 7.2.4-1+ubuntu18.04.1+deb.sury.org+1
 
@@ -21,6 +21,33 @@ SET time_zone = "+00:00";
 --
 -- База данных: `actybase`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `categories`
+--
+
+CREATE TABLE `categories` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `parent_id` int(10) UNSIGNED DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `categories`
+--
+
+INSERT INTO `categories` (`id`, `user_id`, `parent_id`, `name`, `description`, `created_at`, `updated_at`) VALUES
+(2, 2, NULL, 'Жилые комплексы', NULL, '2018-11-29 19:02:16', '2018-11-29 19:02:16'),
+(3, 2, NULL, 'Квартиры', NULL, '2018-11-29 19:02:27', '2018-11-29 19:02:27'),
+(4, 2, NULL, 'Дома', NULL, '2018-11-29 19:02:32', '2018-11-29 19:02:32'),
+(5, 2, NULL, 'Участки', NULL, '2018-11-29 19:02:38', '2018-11-29 19:02:38'),
+(7, 4, 2, 'Корпус', NULL, '2018-11-29 19:15:46', '2018-11-29 19:15:46');
 
 -- --------------------------------------------------------
 
@@ -45,8 +72,7 @@ CREATE TABLE `companies` (
 --
 
 INSERT INTO `companies` (`id`, `created_at`, `updated_at`, `tarif_id`, `city_id`, `name`, `description`, `bestbefore`, `status`) VALUES
-(1, '2018-11-15 16:16:29', '2018-11-20 05:34:41', 0, 0, 'dfgdfs', NULL, NULL, 1),
-(4, '2018-11-19 17:59:22', '2018-11-19 17:59:22', 0, 0, NULL, NULL, NULL, 1);
+(1, '2018-11-15 16:16:29', '2018-11-28 09:11:58', 0, 0, 'Компания', NULL, '2019-01-06', 1);
 
 -- --------------------------------------------------------
 
@@ -74,7 +100,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (47, '2014_10_12_100000_create_password_resets_table', 2),
 (48, '2018_11_10_100504_create_permission_tables', 3),
 (49, '2018_11_15_160557_create_companies_table', 4),
-(50, '2018_11_15_161354_user_to_company', 5);
+(51, '2018_11_15_161354_user_to_company', 5),
+(58, '2018_11_26_054517_create_notifications_table', 6),
+(60, '2018_11_29_072929_create_categories_table', 7);
 
 -- --------------------------------------------------------
 
@@ -107,12 +135,38 @@ CREATE TABLE `model_has_roles` (
 INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
 (2, 'App\\User', 2),
 (3, 'App\\User', 4),
-(4, 'App\\User', 8),
 (3, 'App\\User', 10),
 (3, 'App\\User', 11),
 (4, 'App\\User', 11),
-(3, 'App\\User', 12),
-(4, 'App\\User', 13);
+(4, 'App\\User', 13),
+(4, 'App\\User', 16);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `notifications`
+--
+
+CREATE TABLE `notifications` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `subject` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `text` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` int(11) NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `notifications`
+--
+
+INSERT INTO `notifications` (`id`, `user_id`, `key`, `subject`, `text`, `type`, `created_at`, `updated_at`) VALUES
+(2, 4, 'user_company_innactive', 'Изменение статуса компании', 'Ваша компания помечена как неактивная. Обратитесь к администратору сервиса.', 0, '2018-11-28 08:39:08', '2018-11-28 08:39:08'),
+(3, 4, 'user_company_bestbefore_soon_end', 'Предупреждение о работе компании', 'Срок дейстявия вашей компании закончится 2018-11-28. Для продления обратитесь к администратору сервиса.', 0, '2018-11-28 08:44:20', '2018-11-28 08:44:20'),
+(4, 4, 'user_company_bestbefore_end', 'Остановка компании', 'Срок действия Вашей компании истек. Для продления обратитесь к администратору сервиса.', 0, '2018-11-28 09:07:46', '2018-11-28 09:07:46'),
+(5, 2, 'user_company_bestbefore_start', 'Активация компании', 'Ваша компания снова активна. Срок действия до Nov 28, 2018', 2, '2018-11-28 09:11:58', '2018-11-28 09:11:58');
 
 -- --------------------------------------------------------
 
@@ -212,15 +266,20 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `lastname`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `company_id`) VALUES
-(2, 'Алексей', 'Андрос', 'alex.andros@yandex.ru', NULL, '$2y$10$jiwfiUyN47MsW7MlEQm4hOeZqWQkmfFTfrZRk6LaHYe6Z5mRwfjn6', 'XJEL2Qj8e1H4gVwTY8UCA8NiOografODN2g6cOQ4ng96Bgxwe5G3velDTdni', '2018-11-10 10:00:42', '2018-11-10 10:00:42', 0),
-(4, 'Саша', 'Сашко', 'mail@mail.ru', NULL, '$2y$10$DmsUveaVkukwhrbYoyMwXOTbyohwyEUKQuqBF4eUI5.MGk5GA9ypO', 'txn6HCbgl8D3reSONAnLFCQB9vzmCHR4kSRzAcq44ZKFRHq75HEOaimbcWI4', '2018-11-10 12:05:50', '2018-11-15 16:00:54', 1),
-(8, 'Иван', NULL, 'sdfsd@mail.ru', NULL, '$2y$10$D0MN1X9pFXOAaSbuvI7HFeJp9dXwqtp4mKckxHStswzvZynQ1.J.S', NULL, '2018-11-19 16:39:23', '2018-11-19 16:39:23', 1),
-(12, 'Вася', 'Пупкин', 'sdfsdf@mail.ru', NULL, '123456', NULL, '2018-11-19 17:59:22', '2018-11-19 17:59:22', 4),
-(13, 'Илья', NULL, 'sdfsddddf@mail.ru', NULL, '$2y$10$i46L2TqzVb7r9kbUFu78eeUzSenhP6yKqxUCMO8CVDIUsQU0wY5wW', NULL, '2018-11-19 18:00:42', '2018-11-19 18:00:42', 4);
+(2, 'Алексей', 'Андрос', 'alex.andros@yandex.ru', NULL, '$2y$10$GlAP8QXyZmD9WdimZ6N2meeAljn6olaey/wHKeywmZAamiZdKamaO', '9H4upmCeIMTZ57uquu2I1T2suFgbSbAOJfRQlCpxEAcHIjbcLym5nIQAuZxC', '2018-11-10 10:00:42', '2018-11-25 07:36:00', 0),
+(4, 'Саша', 'Сашко', 'mail@mail.ru', NULL, '$2y$10$61d9Pe0gXGQgYRyLvH/YIe4W5oIMxrm7YB578.6pCpHcp13A12vJy', 'IeGmuDFQzHM2HWtjTrqyy1QEgyqoeA1N7OEFQzNBDjPkOpS1GRIgISmaUIFP', '2018-11-10 12:05:50', '2018-11-25 15:28:35', 1),
+(16, 'Вася', NULL, 'mail12313@mail.ru', NULL, '$2y$10$uFD3hTrh06GHmHrdckHslu7dMTyugzVZY.vFJKreXztdWrmA92PAa', NULL, '2018-11-26 05:58:19', '2018-11-26 05:58:19', 1);
 
 --
 -- Индексы сохранённых таблиц
 --
+
+--
+-- Индексы таблицы `categories`
+--
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `categories_parent_id_foreign` (`parent_id`);
 
 --
 -- Индексы таблицы `companies`
@@ -247,6 +306,12 @@ ALTER TABLE `model_has_permissions`
 ALTER TABLE `model_has_roles`
   ADD PRIMARY KEY (`role_id`,`model_id`,`model_type`),
   ADD KEY `model_has_roles_model_id_model_type_index` (`model_id`,`model_type`);
+
+--
+-- Индексы таблицы `notifications`
+--
+ALTER TABLE `notifications`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Индексы таблицы `password_resets`
@@ -285,16 +350,28 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT для таблицы `categories`
+--
+ALTER TABLE `categories`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT для таблицы `companies`
 --
 ALTER TABLE `companies`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT для таблицы `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+
+--
+-- AUTO_INCREMENT для таблицы `notifications`
+--
+ALTER TABLE `notifications`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT для таблицы `permissions`
@@ -312,11 +389,17 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
 --
+
+--
+-- Ограничения внешнего ключа таблицы `categories`
+--
+ALTER TABLE `categories`
+  ADD CONSTRAINT `categories_parent_id_foreign` FOREIGN KEY (`parent_id`) REFERENCES `categories` (`id`) ON DELETE CASCADE;
 
 --
 -- Ограничения внешнего ключа таблицы `model_has_permissions`

@@ -45,6 +45,10 @@
             @role('megaroot')
                 <li><a href="{{ route('_company_list') }}"><i class="fa fa-briefcase"></i> <span>Компании</span></a></li>
                 <li><a href="{{ route('_user_list') }}"><i class="fa fa-users"></i> <span>Пользователи</span></a></li>
+
+                <li class="nav-header">База</li>
+                <li><a href="{{ route('categories.index') }}"><i class="fa fa-folder-open"></i> <span>Категории обьектов</span></a></li>
+
             @endrole
 
             @role('boss')
@@ -63,6 +67,9 @@
                         <span>Обьекты</span>
                     </a>
                     <ul class="sub-menu">
+                        @role('boss')
+                            <li><a style="margin-left: -20px;" class="text-green" href="{{ route('categories.index') }}"><strong><i class="fas fa-cog fa-fw"></i> Управление категориями</strong></a></li>
+                        @endrole
                         <li><a href="javascript:;">Квартиры</a></li>
                         <li><a href="javascript:;">Студии <small><i class="fa fa-plus text-theme m-l-5"></i></small></a></li>
                         <li><a href="javascript:;">Пентхаусы <small><i class="fa fa-plus text-theme m-l-5"></i></small></a></li>

@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Permission\Models\Role;
+use Carbon;
 
 class Company extends Model
 {
@@ -37,6 +38,11 @@ class Company extends Model
     {
         $this->boss()->delete();
         return parent::delete();
+    }
+
+    public function is_bestbefore()
+    {
+        return Carbon::parse($this->bestbefore) > Carbon::now();
     }
 
 }

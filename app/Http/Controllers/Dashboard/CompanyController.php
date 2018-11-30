@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use Auth;
 use Validator;
 use App\Repositories\CompanyRepository;
+use Carbon;
+use App\Repositories\NotificationRepository;
 
 class CompanyController extends DashboardController
 {
@@ -115,6 +117,11 @@ class CompanyController extends DashboardController
         }
 
         // Валидация прошла ..
+
+        if(!$company->is_bestbefore() && Carbon::parse(request('bestbefore')) > Carbon::now()){
+            //отправляем уведомление об активации
+            NotificationRepository::CompanyBestbeforeStart($company->boss(), $company);
+        }
 
         //Фото
         if($img = $request->file('logo')){

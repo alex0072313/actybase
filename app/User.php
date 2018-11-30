@@ -53,6 +53,11 @@ class User extends Authenticatable
         return $this->hasOne('App\Company', 'id', 'company_id');
     }
 
+    public function categories()
+    {
+        return $this->hasMany(Category::class);
+    }
+
     // Уведомления
     public function notifications(){
         return $this->hasMany(Notification::class);

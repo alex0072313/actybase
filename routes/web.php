@@ -48,6 +48,9 @@ Route::middleware('auth')->group(function () {
         ->name('user_company')
         ->middleware('role:megaroot|boss');
 
+    //Категории обьектов
+    Route::resource('categories', 'Dashboard\CategoryController');
+
     //Выход с кабинета
     Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 
