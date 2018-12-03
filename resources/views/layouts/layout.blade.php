@@ -12,6 +12,7 @@
     <script src="/assets/js/demo/render.highlight.js"></script>
     <script src="/assets/plugins/bootstrap-sweetalert/sweetalert.min.js"></script>
     <script src="/assets/plugins/bootstrap-show-password/bootstrap-show-password.js"></script>
+    <script src="/assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
     <script src="/assets/plugins/select2/dist/js/select2.min.js"></script>
 @endpush
 

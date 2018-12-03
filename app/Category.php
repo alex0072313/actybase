@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Permission\Models\Role;
 
 class Category extends Model
 {
@@ -14,24 +15,51 @@ class Category extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function owners()
+    {
+        return $this->belongsToMany(Owner::class);
+    }
+
     public function parent()
     {
         return Category::where('id', $this->parent_id)->first();
     }
 
-    public function childs()
-    {
-        return Category::where('parent_id', $this->id)->get();
+    public function childs() {
+        return $this->hasMany(Category::class,'parent_id','id');
     }
 
-    public static function allToAccess(){
+    public function isDefault(){
+        return $this->user->hasRole('megaroot');
+    }
 
+    public static function allToAccess($with_child = false){
         $results = [];
-
         if (auth()->user()->hasRole('megaroot')){
-            $results = Category::all();
+            if(!$with_child){
+                $results = Category::where('parent_id', '=', null)
+                    ->get();
+            }else{
+                $results = Category::all();
+            }
         }else{
-            $results = User::getAdmin()->categories->merge(auth()->user()->categories);
+            if(!$with_child) {
+                $results = User::getAdmin()
+                    ->categories()
+                    ->where('parent_id', '=', null)
+                    ->get()
+                    ->merge(
+                        auth()->user()->categories()
+                            ->where('parent_id', '=', null)
+                            ->get()
+                    );
+            }else{
+                $results = User::getAdmin()
+                    ->categories
+                    ->merge(
+                        auth()->user()->categories
+                    );
+            }
         }
 
         return $results;

@@ -63,13 +63,65 @@ $(document).ready(function () {
     }
     if($('.default-select2').length){
         $(".default-select2").select2({
-            minimumResultsForSearch: -1,
+            minimumResultsForSearch: function(){
+                if($(this).data('search')){
+                    return true;
+                }else {
+                    return -1;
+                }
+            },
             placeholder: function(){
                 $(this).data('placeholder');
             }
         })
     }
 
+    if($('.dropzone').length){
+        Dropzone.options.myDropzone = {
+            // Prevents Dropzone from uploading dropped files immediately
+            autoProcessQueue : false,
+            maxFiles: 5,
+            init : function() {
+                var submitButton = document.querySelector("#submit-all")
+                myDropzone = this;
+                submitButton.addEventListener("click", function() {
+                    myDropzone.processQueue();  // Tell Dropzone to process all queued files.
+                });
+                // to handle the added file event
+                this.on("addedfile", function(file) {
+                    var removeButton = Dropzone.createElement("<button> Remove file </button>");
+                    // Capture the Dropzone instance as closure.
+                    var _this = this;
+
+                    // Listen to the click event
+                    removeButton.addEventListener("click", function(e) {
+                        // Make sure the button click doesn't submit the form:
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        // Remove the file preview.
+                        _this.removeFile(file);
+                        // If you want to the delete the file on the server as well,
+                        // you can do the AJAX request here.
+                    });
+                    file.previewElement.appendChild(removeButton);
+                });
+                this.on("maxfilesexceeded", function(file) {
+                    this.removeFile(file);
+                });
+            }
+        };
+
+        $(".dropzone").sortable({
+            items:'.dz-preview',
+            cursor: 'move',
+            opacity: 0.5,
+            containment: '.dropzone',
+            distance: 15,
+            tolerance: 'pointer'
+        });
+
+    }
 
 });
 

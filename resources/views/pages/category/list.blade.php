@@ -45,6 +45,12 @@
                                     @endif
                                 </td>
                             </tr>
+                            @if(count($category->childs))
+                                @php
+                                    $i = 1;
+                                @endphp
+                                @include('includes.category.tree_table_item',['childs' => $category->childs, 'i'=>$i])
+                            @endif
                         @endforeach
                         </tbody>
                     </table>

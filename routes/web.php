@@ -48,12 +48,24 @@ Route::middleware('auth')->group(function () {
         ->name('user_company')
         ->middleware('role:megaroot|boss');
 
-    //Категории обьектов
+    //Категории обьектов (управление)
     Route::middleware('role:megaroot|boss')->group(function () {
         Route::get('/categories/{category}/destroy', 'Dashboard\CategoryController@destroy')->name('categories.destroy');
         Route::resource('categories', 'Dashboard\CategoryController')
             ->except(['destroy', 'show']);
     });
+
+    //Обьекты
+    Route::get('owners/create', 'Dashboard\OwnerController@create')->name('owners.create');
+    Route::get('owners/{category_str_id?}', 'Dashboard\OwnerController@index')->name('owners.index');
+    Route::get('owners/{category_str_id}/create', 'Dashboard\OwnerController@create')->name('owners.create_in_cat');
+    Route::get('owners/{owner_str_id}/destroy', 'Dashboard\OwnerController@destroy')->name('owners.destroy');
+    Route::resource('owners', 'Dashboard\OwnerController')
+        ->except(['index', 'create', 'destroy'])
+        ->parameters([
+            'owners' => 'owner_str_id'
+        ]);
+
 
     //Выход с кабинета
     Route::get('logout', 'Auth\LoginController@logout')->name('logout');

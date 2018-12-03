@@ -17,6 +17,11 @@ class Company extends Model
         return $this->hasMany('App\User');
     }
 
+    public function owners()
+    {
+        return $this->hasMany(Owner::class);
+    }
+
     public function managers(){
         $filtered = $this->users->filter(function ($user) {
            return $user->hasRole(config('role.names.manager.name'));
@@ -43,6 +48,25 @@ class Company extends Model
     public function is_bestbefore()
     {
         return Carbon::parse($this->bestbefore) > Carbon::now();
+    }
+
+    public function categoryGroup(){
+        $owners = [];
+        foreach (Owner::all() as $owner){
+            $owners[$owner->category->name][] = $owner;
+        }
+
+        return $owners;
+    }
+
+    public function scopeOwnersByCat($query)
+    {
+        $owners = [];
+        foreach ($this->hasMany(Owner::class)->get() as $owner){
+            $owners[$owner->category->name][] = $owner;
+        }
+
+        return $owners;
     }
 
 }

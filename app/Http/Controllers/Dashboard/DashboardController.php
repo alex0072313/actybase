@@ -17,12 +17,27 @@ abstract class DashboardController extends ParentController
     protected
         $title,
         $pagetitle,
+        $pagetitle_desc,
         $view,
         $data,
         $company;
 
     public function __construct(){
+        $this->checkUser();
+    }
 
+    public function render()
+    {
+
+        $this->data['title'] = $this->title;
+        $this->data['pagetitle'] = $this->pagetitle ? $this->pagetitle : $this->title;
+        $this->data['pagetitle_desc'] = $this->pagetitle_desc ? $this->pagetitle_desc : '';
+
+        return view($this->view)->with($this->data);
+    }
+
+    protected function checkUser()
+    {
         $this->middleware(function ($request, $next) {
 
             if(!Auth::user()->hasRole('megaroot')){
@@ -71,23 +86,11 @@ abstract class DashboardController extends ParentController
                     }else{
                         session(['company_innactive'=> '']);
                     }
-
-
                 }
             }
 
             return $next($request);
         });
-
-
-    }
-
-    public function render(){
-
-        $this->data['title'] = $this->title;
-        $this->data['pagetitle'] = $this->pagetitle ? $this->pagetitle : $this->title;
-
-        return view($this->view)->with($this->data);
     }
 
 }

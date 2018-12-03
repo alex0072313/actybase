@@ -70,12 +70,11 @@
                         @role('boss')
                             <li><a style="margin-left: -20px;" class="text-green" href="{{ route('categories.index') }}"><strong><i class="fas fa-cog fa-fw"></i> Управление категориями</strong></a></li>
                         @endrole
-                        <li><a href="javascript:;">Квартиры</a></li>
-                        <li><a href="javascript:;">Студии <small><i class="fa fa-plus text-theme m-l-5"></i></small></a></li>
-                        <li><a href="javascript:;">Пентхаусы <small><i class="fa fa-plus text-theme m-l-5"></i></small></a></li>
-                        <li><a href="javascript:;">Ком. помещения <small><i class="fa fa-plus text-theme m-l-5"></i></small></a></li>
-                        <li><a href="javascript:;">Дома</a></li>
-                        <li><a href="javascript:;">Земельные участки</a></li>
+                        @foreach(App\Category::allToAccess(true) as $cat)
+                            <li>
+                                <a href="{{ route('owners.index', 'category_'.$cat->id) }}">{{ $cat->name }}{!! !$cat->isDefault() ? ' <small><i class="fa fa-plus text-theme m-l-5"></i></small>':'' !!}</a>
+                            </li>
+                        @endforeach
                     </ul>
                 </li>
                 <li class="has-sub">
@@ -85,7 +84,6 @@
                     </a>
                 </li>
             @endrole
-
 
             <!-- begin sidebar minify button -->
             <li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="fa fa-angle-double-left"></i></a></li>

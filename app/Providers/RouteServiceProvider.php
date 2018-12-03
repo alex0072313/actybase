@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Category;
 use App\Company;
+use App\Owner;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
@@ -32,6 +34,14 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('company', function ($value) {
             return Company::whereId($value)->first();
+        });
+
+        Route::bind('category_str_id', function ($value) {
+            return Category::findOrFail(str_replace('category_', '', $value));
+        });
+
+        Route::bind('owner_str_id', function ($value) {
+            return Owner::findOrFail(str_replace('owner_', '', $value));
         });
 
         $this->userAccess();

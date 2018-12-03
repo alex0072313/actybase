@@ -58,6 +58,11 @@ class User extends Authenticatable
         return $this->hasMany(Category::class);
     }
 
+    public function owners()
+    {
+        return $this->hasMany(Owner::class);
+    }
+
     // Уведомления
     public function notifications(){
         return $this->hasMany(Notification::class);

@@ -45,6 +45,25 @@ Breadcrumbs::for('categories.create', function ($trail) {
 });
 //
 
+//Обьекты
+Breadcrumbs::for('owners.index', function ($trail, $category = false) {
+    $trail->parent('home');
+    $trail->push('Обьекты'.($category ? (': '.$category->name) : ''), ($category ? route('owners.index', 'category_'.$category->id) : route('owners.index')) );
+});
+Breadcrumbs::for('owners.edit', function ($trail, $owner) {
+    $trail->parent('owners.index');
+    $trail->push('Редактирование обьекта', route('owners.edit', 'owner_'.$owner->id));
+});
+Breadcrumbs::for('owners.create', function ($trail) {
+    $trail->parent('owners.index');
+    $trail->push('Создание обьекта', route('owners.create'));
+});
+Breadcrumbs::for('owners.create_in_cat', function ($trail, $category) {
+    $trail->parent('owners.index', $category);
+    $trail->push('Создание обьекта', route('owners.create_in_cat', 'category_'.$category->id));
+});
+//
+
 Breadcrumbs::for('user_company', function ($trail) {
     $trail->parent('home');
     $trail->push('Компания', route('user_company'));
