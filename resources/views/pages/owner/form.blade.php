@@ -1,5 +1,69 @@
 @push('css')
     <link href="/assets/plugins/dropzone/min/dropzone.min.css" rel="stylesheet" />
+
+    <style type="text/css">
+        .image_uploads{
+            padding: 8px 8px 16px 8px;
+        }
+
+        .image_uploads fieldset{
+            margin-top:8px;
+        }
+        .preview-images-zone {
+            width: 100%;
+            position: relative;
+            overflow:auto;
+        }
+        .preview-images-zone > .preview-image {
+            height: 90px;
+            width: 90px;
+            position: relative;
+            margin: 8px;
+            float: left;
+        }
+        .preview-images-zone > .preview-image > .image-zone {
+            width: 100%;
+            height: 100%;
+        }
+        .preview-images-zone > .preview-image > .image-zone > img {
+            width: 100%;
+            height: 100%;
+        }
+        .preview-images-zone > .preview-image > .tools-edit-image {
+            position: absolute;
+            z-index: 100;
+            color: #fff;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 10px;
+            display: none;
+        }
+        .preview-images-zone > .preview-image > .image-cancel {
+            font-size: 18px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-weight: bold;
+            margin-right: 10px;
+            cursor: pointer;
+            display: none;
+            z-index: 100;
+        }
+        .preview-image:hover > .image-zone {
+            cursor: move;
+            opacity: .5;
+        }
+        .preview-image:hover > .tools-edit-image,
+        .preview-image:hover > .image-cancel {
+            display: block;
+        }
+        .ui-sortable-helper {
+            width: 90px !important;
+            height: 90px !important;
+        }
+    </style>
+
 @endpush
 
 @push('js')
@@ -117,8 +181,21 @@
                     <h4 class="panel-title">Изображения</h4>
                 </div>
 
-                <div class="panel-body">
-                    <form class="dropzone" action="/action-which-you-want/" method="post" enctype="multipart/form-data" style="border:1px solid #000;"></form>
+                <div class="">
+                    {{-- Загрузчик --}}
+
+                    <div class="image_uploads">
+                        
+                        <div class="preview-images-zone">
+                            
+                        </div>
+                        <fieldset class="text-center">
+                            <a href="javascript:void(0)" onclick="$('#pro-image').click()" class="btn btn-default btn-lg"><i class="fas fa-sm fa-fw fa-upload"></i> Загрузить изображения</a>
+                            <input type="file" id="pro-image" name="images" style="display: none;" class="form-control" multiple>
+                        </fieldset>
+                    </div>
+
+                    {{--  --}}
                 </div>
 
             </div>
