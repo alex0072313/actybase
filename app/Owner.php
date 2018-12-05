@@ -24,12 +24,19 @@ class Owner extends Model
         return $this->belongsTo(Company::class);
     }
 
-    public function childs() {
+    public function childs() 
+    {
         return $this->hasMany(Owner::class,'parent_id','id');
     }
 
-    public function parent() {
+    public function parent() 
+    {
         return $this->belongsTo(Owner::class,'id','parent_id');
+    }
+
+    public function images() 
+    {
+        return $this->hasMany(Image::class);
     }
 
 

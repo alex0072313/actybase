@@ -76,50 +76,51 @@ $(document).ready(function () {
         })
     }
 
-    if($('.dropzone').length){
-        Dropzone.options.myDropzone = {
-            // Prevents Dropzone from uploading dropped files immediately
-            autoProcessQueue : false,
-            maxFiles: 5,
-            init : function() {
-                var submitButton = document.querySelector("#submit-all")
-                myDropzone = this;
-                submitButton.addEventListener("click", function() {
-                    myDropzone.processQueue();  // Tell Dropzone to process all queued files.
-                });
-                // to handle the added file event
-                this.on("addedfile", function(file) {
-                    var removeButton = Dropzone.createElement("<button> Remove file </button>");
-                    // Capture the Dropzone instance as closure.
-                    var _this = this;
-
-                    // Listen to the click event
-                    removeButton.addEventListener("click", function(e) {
-                        // Make sure the button click doesn't submit the form:
-                        e.preventDefault();
-                        e.stopPropagation();
-
-                        // Remove the file preview.
-                        _this.removeFile(file);
-                        // If you want to the delete the file on the server as well,
-                        // you can do the AJAX request here.
-                    });
-                    file.previewElement.appendChild(removeButton);
-                });
-                this.on("maxfilesexceeded", function(file) {
-                    this.removeFile(file);
-                });
-            }
-        };
-
-        $(".dropzone").sortable({
-            items:'.dz-preview',
-            cursor: 'move',
-            opacity: 0.5,
-            containment: '.dropzone',
-            distance: 15,
-            tolerance: 'pointer'
+    if($('.image_uploads').length){
+       
+        $(document).ready(function() {
+            document.getElementById('pro-image').addEventListener('change', readImage, false);
+            
+            $( ".preview-images-zone" ).sortable();
+            
+            $(document).on('click', '.image-cancel', function() {
+                let no = $(this).data('no');
+                $(".preview-image.preview-show-"+no).remove();
+            });
         });
+
+
+        var num = 4;
+        function readImage() {
+            if (window.File && window.FileList && window.FileReader) {
+                var files = event.target.files; //FileList object
+                var output = $(".preview-images-zone");
+
+                for (let i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    if (!file.type.match('image')) continue;
+                    
+                    var picReader = new FileReader();
+                    
+                    picReader.addEventListener('load', function (event) {
+                        var picFile = event.target;
+                        var html =  '<div class="preview-image preview-show-' + num + '">' +
+                                    '<div class="image-cancel" data-no="' + num + '">x</div>' +
+                                    '<div class="image-zone"><img id="pro-img-' + num + '" src="' + picFile.result + '"></div>' +
+                                    '<div class="tools-edit-image"><a href="javascript:void(0)" data-no="' + num + '" class="btn btn-light btn-edit-image">edit</a></div>' +
+                                    '</div>';
+
+                        output.append(html);
+                        num = num + 1;
+                    });
+
+                    picReader.readAsDataURL(file);
+                }
+                //$("#pro-image").val('');
+            } else {
+                console.log('Browser not support');
+            }
+        }
 
     }
 

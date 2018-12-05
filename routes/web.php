@@ -26,6 +26,7 @@ Route::group(['middleware' => ['role:megaroot']], function () {
 
 });
 
+
 Route::middleware('auth')->group(function () {
 
     //Главная
@@ -65,6 +66,10 @@ Route::middleware('auth')->group(function () {
         ->parameters([
             'owners' => 'owner_str_id'
         ]);
+
+
+    //Изображения
+    Route::post('owners/images/{owner?}', 'Dashboard\ImageController@save_temp')->name('owners.image_save_temp');
 
 
     //Выход с кабинета

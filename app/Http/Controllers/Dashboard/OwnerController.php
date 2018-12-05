@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Category;
+use App\Image;
 use App\Owner;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Validator;
 use Auth;
+use Storage;
+use Image as IntervetionImage;
 
 class OwnerController extends DashboardController
 {
@@ -114,7 +117,7 @@ class OwnerController extends DashboardController
                 ->back()
                 ->withErrors($validate)
                 ->withInput()
-                ->with('errorы', 'Ошибка при обновлении обьекта, проверьте форму!');
+                ->with('error', 'Ошибка при обновлении обьекта, проверьте форму!');
         }
 
         if($request->input('category_id') == 0){
@@ -127,6 +130,22 @@ class OwnerController extends DashboardController
 
         if($request->input('parent_id') == 0){
             $request->request->set('parent_id', null);
+        }
+
+        // Изображения
+        if($request->hasFile('images')){
+            foreach ($request->file('images') as $imageupload){
+                $image_model = new Image();
+
+                $image_model->filename = $imageupload->getClientOriginalName();
+                $image_model->path = 'owner_imgs/'.$owner->id.'/'.$image_model->filename;
+
+                $img = IntervetionImage::make($imageupload);
+
+                if(Storage::disk('public')->put($image_model->path, (string) $img->encode())){
+                    $owner->images()->save($image_model);
+                }
+            }
         }
 
         if($owner->update($request->all())){
