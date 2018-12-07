@@ -11,6 +11,7 @@ use Validator;
 use Auth;
 use Storage;
 use Image as IntervetionImage;
+use Config;
 
 class OwnerController extends DashboardController
 {
@@ -134,21 +135,41 @@ class OwnerController extends DashboardController
 
         // Изображения
         if($request->hasFile('images')){
-            foreach ($request->file('images') as $imageupload){
-                $image_model = new Image();
 
-                $image_model->filename = $imageupload->getClientOriginalName();
-                $image_model->path = 'owner_imgs/'.$owner->id.'/'.$image_model->filename;
+            foreach ($request->file('images') as $image_upload){
+                $image = new Image();
+                $image->filename = $image_upload->getClientOriginalName();
 
-                $img = IntervetionImage::make($imageupload);
+                $filename_without_ext = pathinfo($image->filename, PATHINFO_FILENAME);
 
-                if(Storage::disk('public')->put($image_model->path, (string) $img->encode())){
-                    $owner->images()->save($image_model);
+                $dir = 'owner_imgs/'.($owner->id % 100).'/'.$owner->id.'/';
+                $src_path = $dir . $image->filename;
+
+                //Оригинал
+                Storage::disk('src')->put($src_path, (string) IntervetionImage::make($image_upload)->encode());
+                $src_image = Storage::disk('src')->path($src_path);
+
+                //Обработанные
+                foreach (Config::get('image.owner') as $folder => $params){
+                    $ext = $params['ext'] ? $params['ext'] : $image_upload->getClientOriginalExtension();
+                    $q = $params['q'] ? $params['q'] : 90;
+
+                    $th_path = $dir . '/' . $folder . '/' . $filename_without_ext . '.' . $ext;
+
+                    $image_prepare = IntervetionImage::make($src_image);
+                    if($params['w'] && $params['h']){
+                        $image_prepare->fit($params['w'], $params['h'], function ($constraint) {
+                            $constraint->upsize();
+                        });
+                    }
+                    Storage::disk('public')->put($th_path, $image_prepare->encode($ext, $q));
                 }
+
+                $owner->images()->save($image);
             }
         }
 
-        if($owner->update($request->all())){
+        if($owner->update($request->all()) ){
             return redirect()
                 ->route('owners.index')
                 ->with('gritter', [
