@@ -142,7 +142,7 @@ class OwnerController extends DashboardController
 
                 $filename_without_ext = pathinfo($image->filename, PATHINFO_FILENAME);
 
-                $dir = 'owner_imgs/'.($owner->id % 100).'/'.$owner->id.'/';
+                $dir = Config::get('image.owner.dir_name').'/'.($owner->id % 100).'/'.$owner->id.'/';
                 $src_path = $dir . $image->filename;
 
                 //Оригинал
@@ -150,7 +150,7 @@ class OwnerController extends DashboardController
                 $src_image = Storage::disk('src')->path($src_path);
 
                 //Обработанные
-                foreach (Config::get('image.owner') as $folder => $params){
+                foreach (Config::get('image.owner.th') as $folder => $params){
                     $ext = $params['ext'] ? $params['ext'] : $image_upload->getClientOriginalExtension();
                     $q = $params['q'] ? $params['q'] : 90;
 

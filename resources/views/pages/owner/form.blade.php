@@ -114,7 +114,6 @@
 
                     <div class="">
                         {{-- Загрузчик --}}
-
                         <div class="image_uploads">
 
                             <div class="preview-images-zone">
@@ -123,7 +122,7 @@
                                         <div class="preview-image preview-show-3">
                                             <div class="image-cancel" data-no="3">x</div>
                                             <div class="image-zone">
-                                                <img id="pro-img-3" src="{{ Storage::disk('public')->url($image->path) }}">
+                                                <img id="pro-img-3" src="{{ $image->th_url() }}">
                                             </div>
                                             <div class="tools-edit-image"><a href="javascript:void(0)" data-no="3" class="btn btn-light btn-edit-image">edit</a></div>
                                         </div>
@@ -135,8 +134,6 @@
                                 <input type="file" id="pro-image" name="images[]" style="display: none;" class="form-control" multiple>
                             </fieldset>
                         </div>
-
-
                         {{--  --}}
                     </div>
 
