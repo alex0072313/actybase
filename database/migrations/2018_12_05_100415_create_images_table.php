@@ -28,7 +28,6 @@ class CreateImagesTable extends Migration
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      *
