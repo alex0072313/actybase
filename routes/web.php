@@ -67,10 +67,8 @@ Route::middleware('auth')->group(function () {
             'owners' => 'owner_str_id'
         ]);
 
-
     //Изображения
-    Route::post('owners/images/{owner?}', 'Dashboard\ImageController@save_temp')->name('owners.image_save_temp');
-
+    Route::delete('/owners_images_destroy/{image}', 'Dashboard\ImageController@destroy')->name('image.destroy');
 
     //Выход с кабинета
     Route::get('logout', 'Auth\LoginController@logout')->name('logout');

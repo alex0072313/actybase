@@ -19,6 +19,7 @@ class CreateImagesTable extends Migration
             $table->integer('owner_id')->unsigned()->index()->nullable();
             $table->foreign('owner_id')->references('id')->on('owners')->onDelete('cascade');
 
+            $table->integer('pos')->default(0);
             $table->string('filename');
 
             $table->string('name')->nullable();

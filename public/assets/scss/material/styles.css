@@ -16968,51 +16968,46 @@ table.dataTable thead .sorting_desc_disabled:after,
 .dropdown-menu.media-list .dropdown-header {
   background: #37474F !important; }
 
-.image_uploads fieldset {
-  margin-top: 8px; }
-.image_uploads .preview-images-zone {
-  width: 100%;
+.image_uploads .grid {
   position: relative;
-  overflow: auto; }
-.image_uploads .preview-images-zone > .preview-image {
-  height: 90px;
-  width: 90px;
-  position: relative;
-  margin: 8px;
-  float: left; }
-.image_uploads .preview-images-zone > .preview-image > .image-zone {
-  width: 100%;
-  height: 100%; }
-.image_uploads .preview-images-zone > .preview-image > .image-zone > img {
-  width: 100%;
-  height: 100%; }
-.image_uploads .preview-images-zone > .preview-image > .tools-edit-image {
+  margin: 7.5px;
+  overflow: hidden; }
+.image_uploads .item {
   position: absolute;
-  z-index: 100;
-  color: #fff;
-  bottom: 0;
+  width: 25%;
+  height: 100px;
+  line-height: 100px;
+  z-index: 1; }
+.image_uploads .item.muuri-item-hidden {
+  z-index: 0; }
+.image_uploads .item.muuri-item-releasing {
+  z-index: 2; }
+.image_uploads .item.muuri-item-dragging {
+  z-index: 3; }
+.image_uploads .item-content {
+  position: relative;
   width: 100%;
+  height: 100%;
   text-align: center;
-  margin-bottom: 10px;
-  display: none; }
-.image_uploads .preview-images-zone > .preview-image > .image-cancel {
-  font-size: 18px;
-  position: absolute;
-  top: 0;
-  right: 0;
-  font-weight: bold;
-  margin-right: 10px;
   cursor: pointer;
-  display: none;
-  z-index: 100; }
-.image_uploads .preview-image:hover > .image-zone {
-  cursor: move;
-  opacity: .5; }
-.image_uploads .preview-image:hover > .tools-edit-image,
-.image_uploads .preview-image:hover > .image-cancel {
-  display: block; }
-.image_uploads .ui-sortable-helper {
-  width: 90px !important;
-  height: 90px !important; }
+  padding: 7.5px; }
+  .image_uploads .item-content .remove {
+    position: absolute;
+    top: 7.5px;
+    right: 7.5px;
+    display: block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px; }
+  .image_uploads .item-content .image {
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover; }
+.image_uploads .item.muuri-item-dragging .item-content {
+  background: #4CAF50; }
+.image_uploads .item.muuri-item-releasing .item-content {
+  background: blueViolet; }
 
 /*# sourceMappingURL=styles.css.map */

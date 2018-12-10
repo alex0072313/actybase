@@ -2,6 +2,14 @@
     <link href="/assets/plugins/dropzone/min/dropzone.min.css" rel="stylesheet" />
 @endpush
 
+@push('js')
+    <script src="https://unpkg.com/web-animations-js@2.3.1/web-animations.min.js"></script>
+    <script src="https://unpkg.com/hammerjs@2.0.8/hammer.min.js"></script>
+    <script src="https://unpkg.com/muuri@0.7.1/dist/muuri.min.js"></script>
+
+    <script src="/assets/js/photoboard.js"></script>
+@endpush
+
 @extends('layouts.layout')
 
 @if(isset($owner))
@@ -23,9 +31,6 @@
                 <!-- begin panel -->
                 <div class="panel panel-inverse">
                     <div class="panel-heading">
-                        <div class="panel-heading-btn">
-                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-                        </div>
                         <h4 class="panel-title">Основная информация</h4>
                     </div>
 
@@ -106,36 +111,34 @@
                 <!-- begin panel -->
                 <div class="panel panel-inverse">
                     <div class="panel-heading">
-                        <div class="panel-heading-btn">
-                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-                        </div>
                         <h4 class="panel-title">Изображения</h4>
                     </div>
 
-                    <div class="">
-                        {{-- Загрузчик --}}
-                        <div class="image_uploads">
+                    {{-- Загрузчик --}}
+                    <div class="image_uploads">
+                        <div class="grid">
+                            @if(isset($owner))
+                                @foreach($owner->images()->orderBy('pos')->get() as $image)
+                                    <div class="item" data-for="{{ $image->id }}" data-filename="{{ $image->filename }}">
+                                        <div class="item-content">
+                                            <input type="hidden" name="images_pos[]" value="{{ $image->filename }}">
 
-                            <div class="preview-images-zone">
-                                @if(isset($owner))
-                                    @foreach($owner->images as $image)
-                                        <div class="preview-image preview-show-3">
-                                            <div class="image-cancel" data-no="3">x</div>
-                                            <div class="image-zone">
-                                                <img id="pro-img-3" src="{{ $image->th_url() }}">
-                                            </div>
-                                            <div class="tools-edit-image"><a href="javascript:void(0)" data-no="3" class="btn btn-light btn-edit-image">edit</a></div>
+                                            <a href="javascript:;" class="remove text-danger" title="Удалить">
+                                                <i class="fas fa-fw fa-times"></i>
+                                            </a>
+
+                                            <div class="image" style="background-image: url({{ $image->th_url() }});"></div>
                                         </div>
-                                    @endforeach
-                                @endif
-                            </div>
-                            <fieldset class="text-center">
-                                <a href="javascript:void(0)" onclick="$('#pro-image').click()" class="btn btn-default btn-lg"><i class="fas fa-sm fa-fw fa-upload"></i> Загрузить изображения</a>
-                                <input type="file" id="pro-image" name="images[]" style="display: none;" class="form-control" multiple>
-                            </fieldset>
+                                    </div>
+                                @endforeach
+                            @endif
                         </div>
-                        {{--  --}}
+                        <fieldset class="text-center pb-3">
+                            <a href="javascript:void(0)" onclick="$('#pro-image').click()" class="btn btn-default btn-lg"><i class="fas fa-sm fa-fw fa-upload"></i> Загрузить изображения</a>
+                            <input type="file" id="pro-image" name="images[]" style="display: none;" class="form-control" multiple>
+                        </fieldset>
                     </div>
+                    {{--  --}}
 
                 </div>
             </div>

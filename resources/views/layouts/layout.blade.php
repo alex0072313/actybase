@@ -31,8 +31,8 @@
                 @if(session('gritter.img'))
                 image:"{!!session('gritter.img') !!}",
                 @endif
-                sticky: true,
-                //time:"",
+                //sticky: true,
+                time:8000,
                 //class_name:"gritter-error gritter-light"
             });
         }, 2000);

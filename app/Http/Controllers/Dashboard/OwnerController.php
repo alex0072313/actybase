@@ -71,6 +71,10 @@ class OwnerController extends DashboardController
         }
 
         if($owner = Auth::user()->owners()->create($request->all())){
+
+            //Изображения
+            $this->images($owner);
+
             return redirect()
                 ->route('owners.index', 'category_'.$owner->category->id)
                 ->with('gritter', [
@@ -133,43 +137,11 @@ class OwnerController extends DashboardController
             $request->request->set('parent_id', null);
         }
 
-        // Изображения
-        if($request->hasFile('images')){
-
-            foreach ($request->file('images') as $image_upload){
-                $image = new Image();
-                $image->filename = $image_upload->getClientOriginalName();
-
-                $filename_without_ext = pathinfo($image->filename, PATHINFO_FILENAME);
-
-                $dir = Config::get('image.owner.dir_name').'/'.($owner->id % 100).'/'.$owner->id.'/';
-                $src_path = $dir . $image->filename;
-
-                //Оригинал
-                Storage::disk('src')->put($src_path, (string) IntervetionImage::make($image_upload)->encode());
-                $src_image = Storage::disk('src')->path($src_path);
-
-                //Обработанные
-                foreach (Config::get('image.owner.th') as $folder => $params){
-                    $ext = $params['ext'] ? $params['ext'] : $image_upload->getClientOriginalExtension();
-                    $q = $params['q'] ? $params['q'] : 90;
-
-                    $th_path = $dir . '/' . $folder . '/' . $filename_without_ext . '.' . $ext;
-
-                    $image_prepare = IntervetionImage::make($src_image);
-                    if($params['w'] && $params['h']){
-                        $image_prepare->fit($params['w'], $params['h'], function ($constraint) {
-                            $constraint->upsize();
-                        });
-                    }
-                    Storage::disk('public')->put($th_path, $image_prepare->encode($ext, $q));
-                }
-
-                $owner->images()->save($image);
-            }
-        }
-
         if($owner->update($request->all()) ){
+
+            //Изображения
+            $this->images($owner);
+
             return redirect()
                 ->route('owners.index')
                 ->with('gritter', [
@@ -190,4 +162,26 @@ class OwnerController extends DashboardController
                 ]);
         }
     }
+
+    protected function images(Owner $owner)
+    {
+        // Изображения
+        $images_pos = request()->get('images_pos');
+
+        // Сортировка существующих
+        if($images_pos) {
+            foreach ($images_pos as $image_name => $pos) {
+                $owner->images()->where('filename', $image_name)->update(['pos' => $pos]);
+            }
+        }
+        //
+
+        if(request()->hasFile('images')){
+            foreach (request()->file('images') as $image_upload){
+                $pos = $images_pos[$image_upload->getClientOriginalName()];
+                $owner->images()->save(new Image(['file' => $image_upload, 'pos' => $pos]));
+            }
+        }
+    }
+
 }
