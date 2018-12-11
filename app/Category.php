@@ -20,6 +20,11 @@ class Category extends Model
         return $this->belongsToMany(Owner::class);
     }
 
+    public function fields()
+    {
+        return $this->belongsToMany(Field::class, 'fields_categories')->withTimestamps();
+    }
+
     public function parent()
     {
         return Category::where('id', $this->parent_id)->first();
