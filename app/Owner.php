@@ -24,6 +24,11 @@ class Owner extends Model
         return $this->belongsTo(Company::class);
     }
 
+    public function fields()
+    {
+        return $this->hasMany(Fieldcontent::class);
+    }
+
     public function childs() 
     {
         return $this->hasMany(Owner::class,'parent_id','id');

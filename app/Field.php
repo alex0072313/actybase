@@ -17,5 +17,10 @@ class Field extends Model
     {
         return $this->belongsToMany(Category::class, 'fields_categories')->withTimestamps();
     }
+    
+    public function contents()
+    {
+        return $this->hasMany(Fieldcontent::class);
+    }
 
 }

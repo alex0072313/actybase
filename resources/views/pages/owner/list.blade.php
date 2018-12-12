@@ -3,6 +3,7 @@
 @section('content')
 
     <a href="{{ isset($category) ? route('owners.create_in_cat', 'category_'.$category->id) : route('owners.create') }}" class="btn btn-green btn-lg mb-4">Добавить обьект</a>
+    <a href="{{ isset($category) ? route('fields.index', 'category_'.$category->id) : route('fields.index') }}" class="btn btn-default mb-4 ml-2">Управение доп. полями</a>
 
     @if($owners)
         <!-- begin panel -->

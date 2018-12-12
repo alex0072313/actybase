@@ -20,12 +20,18 @@ class FieldController extends DashboardController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Category $category)
     {
         $this->view = 'pages.field.list';
         $this->title = 'Дополнительные поля';
 
-        $this->data['fields'] = Field::all();
+        if($category->name){
+            $fields = $category->fields;
+        }else{
+            $fields = Field::all();
+        }
+
+        $this->data['fields'] = $fields;
 
         return $this->render();
     }
@@ -121,6 +127,7 @@ class FieldController extends DashboardController
         $validate = Validator::make($request->all(), [
             'name' => 'required|max:255|min:3',
             'fieldtype_id' => 'required',
+            'categories' => 'required|array',
         ]);
 
         $validate->setAttributeNames([
@@ -136,10 +143,7 @@ class FieldController extends DashboardController
         }
 
         if($categories = $request->get('categories')){
-
             $field->categories()->sync($categories);
-
-            //Category::find($cat_id)->fields()->attach($field->id);
         }
 
         if($field->update($request->all())){
@@ -159,8 +163,15 @@ class FieldController extends DashboardController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Field $field)
     {
-        //
+        if($field->delete()){
+            return redirect()
+                ->back()
+                ->with('gritter', [
+                    'title' => 'Удаление поля',
+                    'msg'=> 'Вы только что удалили поле '.$field->name
+                ]);
+        }
     }
 }

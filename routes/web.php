@@ -71,9 +71,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/owners_images_destroy/{image}', 'Dashboard\ImageController@destroy')->name('image.destroy');
 
     //Дополнительные поля
+    Route::get('fields/create', 'Dashboard\FieldController@create')->name('fields.create');
+    Route::get('fields/{category_str_id?}', 'Dashboard\FieldController@index')->name('fields.index');
+    Route::get('fields/{category_str_id}/create', 'Dashboard\FieldController@create')->name('fields.create_in_cat');
     Route::get('fields/{field}/destroy', 'Dashboard\FieldController@destroy')->name('fields.destroy');
     Route::resource('fields', 'Dashboard\FieldController')
-        ->except(['destroy']);
+        ->except(['index', 'create', 'destroy']);
 
     //Выход с кабинета
     Route::get('logout', 'Auth\LoginController@logout')->name('logout');
