@@ -106,6 +106,7 @@ class OwnerController extends DashboardController
         $this->view = 'pages.owner.form';
         $this->title = 'Обьект: '.$owner->name;
 
+
         $this->pagetitle = $owner->name;
 
         if($category = $owner->category){
@@ -116,7 +117,6 @@ class OwnerController extends DashboardController
 
         return $this->render();
     }
-
     public function update(Request $request, Owner $owner)
     {
         $validate = Validator::make($request->all(), [

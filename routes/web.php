@@ -70,6 +70,13 @@ Route::middleware('auth')->group(function () {
     //Изображения
     Route::delete('/owners_images_destroy/{image}', 'Dashboard\ImageController@destroy')->name('image.destroy');
 
+    //Дополнительные поля
+    Route::resource('fields', 'Dashboard\FieldController');
+
+    Route::get('fieldtypes/{field}/destroy', 'Dashboard\FieldtypeController@destroy')->name('fieldtypes.destroy');
+    Route::resource('fieldtypes', 'Dashboard\FieldtypeController')
+        ->except(['destroy']);
+
     //Выход с кабинета
     Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 

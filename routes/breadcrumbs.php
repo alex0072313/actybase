@@ -64,6 +64,12 @@ Breadcrumbs::for('owners.create_in_cat', function ($trail, $category) {
 });
 //
 
+//Поля
+Breadcrumbs::for('fieldtypes.index', function ($trail) {
+    $trail->parent('home');
+    $trail->push('Типы дополнительных полей', route('fieldtypes.index'));
+});
+//
 Breadcrumbs::for('user_company', function ($trail) {
     $trail->parent('home');
     $trail->push('Компания', route('user_company'));
