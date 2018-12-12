@@ -62,18 +62,19 @@ $(document).ready(function () {
         });
     }
     if($('.default-select2').length){
-        $(".default-select2").select2({
-            minimumResultsForSearch: function(){
-                if($(this).data('search')){
-                    return true;
-                }else {
-                    return -1;
-                }
-            },
-            placeholder: function(){
-                $(this).data('placeholder');
-            }
-        })
+
+        $(".default-select2").each(function(){
+            var select = $(this),
+                search = select.data('search') ? true : - 1;
+
+                select.select2({
+                    minimumResultsForSearch: search,
+                    placeholder: function(){
+                        $(this).data('placeholder');
+                    }
+                });
+        });
+ 
     }
 
 });

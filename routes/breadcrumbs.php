@@ -65,11 +65,20 @@ Breadcrumbs::for('owners.create_in_cat', function ($trail, $category) {
 //
 
 //Поля
-Breadcrumbs::for('fieldtypes.index', function ($trail) {
+Breadcrumbs::for('fields.index', function ($trail) {
     $trail->parent('home');
-    $trail->push('Типы дополнительных полей', route('fieldtypes.index'));
+    $trail->push('Поля обьектов', route('fields.index'));
+});
+Breadcrumbs::for('fields.edit', function ($trail, $field) {
+    $trail->parent('fields.index');
+    $trail->push('Редактирование поля', route('fields.edit', $field->id));
+});
+Breadcrumbs::for('fields.create', function ($trail) {
+    $trail->parent('fields.index');
+    $trail->push('Создание поля', route('fields.create'));
 });
 //
+
 Breadcrumbs::for('user_company', function ($trail) {
     $trail->parent('home');
     $trail->push('Компания', route('user_company'));

@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Dashboard;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Field;
+use App\Category;
+use Validator;
 
 class FieldController extends DashboardController
 {
@@ -19,7 +22,12 @@ class FieldController extends DashboardController
      */
     public function index()
     {
-        //
+        $this->view = 'pages.field.list';
+        $this->title = 'Дополнительные поля';
+
+        $this->data['fields'] = Field::all();
+
+        return $this->render();
     }
 
     /**
@@ -29,7 +37,10 @@ class FieldController extends DashboardController
      */
     public function create()
     {
-        //
+        $this->view = 'pages.field.form';
+        $this->title = 'Создание нового поля';
+
+        return $this->render();
     }
 
     /**
@@ -40,7 +51,35 @@ class FieldController extends DashboardController
      */
     public function store(Request $request)
     {
-        //
+        $validate = Validator::make($request->all(), [
+            'name' => 'required|max:255|min:3',
+            'categories' => 'required|array',
+        ]);
+
+        $validate->setAttributeNames([
+            'name' => 'Название',
+        ]);
+
+        if($validate->fails()){
+            return redirect()
+                ->back()
+                ->withErrors($validate)
+                ->withInput()
+                ->with('field_error', 'Ошибка при создании дополнительного поля!');
+        }
+
+        if($field = Field::create($request->all())){
+            if($categories = $request->get('categories')){
+                $field->categories()->sync($categories);
+            }
+
+            return redirect()
+                ->route('fields.index')
+                ->with('gritter', [
+                    'title' => 'Добавление поля',
+                    'msg' => 'Дополнительное поле было успешно создано!',
+                ]);
+        }
     }
 
     /**
@@ -60,9 +99,14 @@ class FieldController extends DashboardController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Field $field)
     {
-        //
+        $this->view = 'pages.field.form';
+        $this->title = 'Редактирование поля: '.$field->name;
+
+        $this->data['field'] = $field;
+
+        return $this->render();
     }
 
     /**
@@ -72,9 +116,41 @@ class FieldController extends DashboardController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Field $field)
     {
-        //
+        $validate = Validator::make($request->all(), [
+            'name' => 'required|max:255|min:3',
+            'fieldtype_id' => 'required',
+        ]);
+
+        $validate->setAttributeNames([
+            'name' => 'Название',
+        ]);
+
+        if($validate->fails()){
+            return redirect()
+                ->back()
+                ->withErrors($validate)
+                ->withInput()
+                ->with('field_error', 'Ошибка при редактировании дополнительного поля!');
+        }
+
+        if($categories = $request->get('categories')){
+
+            $field->categories()->sync($categories);
+
+            //Category::find($cat_id)->fields()->attach($field->id);
+        }
+
+        if($field->update($request->all())){
+            return redirect()
+                ->route('fields.index')
+                ->with('gritter', [
+                    'title' => 'Обновление поля',
+                    'msg' => 'Дополнительное поле было успешно обновлено!',
+                ]);
+        }
+
     }
 
     /**

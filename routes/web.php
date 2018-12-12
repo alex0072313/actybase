@@ -71,10 +71,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/owners_images_destroy/{image}', 'Dashboard\ImageController@destroy')->name('image.destroy');
 
     //Дополнительные поля
-    Route::resource('fields', 'Dashboard\FieldController');
-
-    Route::get('fieldtypes/{field}/destroy', 'Dashboard\FieldtypeController@destroy')->name('fieldtypes.destroy');
-    Route::resource('fieldtypes', 'Dashboard\FieldtypeController')
+    Route::get('fields/{field}/destroy', 'Dashboard\FieldController@destroy')->name('fields.destroy');
+    Route::resource('fields', 'Dashboard\FieldController')
         ->except(['destroy']);
 
     //Выход с кабинета
