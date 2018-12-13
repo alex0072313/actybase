@@ -31,6 +31,14 @@ class Company extends Model
 
     }
 
+    public function categories()
+    {
+        return $this->hasManyThrough(
+            Category::class, User::class,
+            'company_id', 'user_id', 'id'
+        );
+    }
+
     public function fields()
     {
         return $this->hasMany(Field::class);

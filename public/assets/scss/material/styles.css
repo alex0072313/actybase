@@ -17010,4 +17010,7 @@ table.dataTable thead .sorting_desc_disabled:after,
 .image_uploads .item.muuri-item-releasing .item-content {
   background: blueViolet; }
 
+#sidebar .btn-item {
+  padding-left: 30px; }
+
 /*# sourceMappingURL=styles.css.map */

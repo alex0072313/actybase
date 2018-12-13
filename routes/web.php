@@ -50,11 +50,11 @@ Route::middleware('auth')->group(function () {
         ->middleware('role:megaroot|boss');
 
     //Категории обьектов (управление)
-    Route::middleware('role:megaroot|boss')->group(function () {
+    //Route::middleware('role:megaroot|boss')->group(function () {
         Route::get('/categories/{category}/destroy', 'Dashboard\CategoryController@destroy')->name('categories.destroy');
         Route::resource('categories', 'Dashboard\CategoryController')
             ->except(['destroy', 'show']);
-    });
+    //});
 
     //Обьекты
     Route::get('owners/create', 'Dashboard\OwnerController@create')->name('owners.create');
@@ -74,9 +74,12 @@ Route::middleware('auth')->group(function () {
     Route::get('fields/create', 'Dashboard\FieldController@create')->name('fields.create');
     Route::get('fields/{category_str_id?}', 'Dashboard\FieldController@index')->name('fields.index');
     Route::get('fields/{category_str_id}/create', 'Dashboard\FieldController@create')->name('fields.create_in_cat');
-    Route::get('fields/{field}/destroy', 'Dashboard\FieldController@destroy')->name('fields.destroy');
+    Route::get('fields/{field_str_id}/destroy', 'Dashboard\FieldController@destroy')->name('fields.destroy');
     Route::resource('fields', 'Dashboard\FieldController')
-        ->except(['index', 'create', 'destroy']);
+        ->except(['index', 'create', 'destroy'])
+        ->parameters([
+            'fields' => 'field_str_id'
+        ]);
 
     //Выход с кабинета
     Route::get('logout', 'Auth\LoginController@logout')->name('logout');

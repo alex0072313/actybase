@@ -67,9 +67,19 @@
                         <span>Обьекты</span>
                     </a>
                     <ul class="sub-menu">
-                        @role('boss')
-                            <li><a style="margin-left: -20px;" class="text-green" href="{{ route('categories.index') }}"><strong><i class="fas fa-cog fa-fw"></i> Управление категориями</strong></a></li>
-                        @endrole
+
+                        <li>
+                            <div class="btn-item mb-2 mt-1">
+                                <a class="btn btn-xs btn-green" href="{{ route('categories.index') }}"><i class="fas fa-sm fa-fw fa-folder-open"></i> <strong>Управление категориями</strong>
+                            </a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="btn-item mb-2">
+                                <a class="btn btn-xs btn-green" href="{{ route('fields.index') }}"><i class="fas fa-sm fa-fw fa-server"></i> <strong>Дополнительные поля</strong></a>
+                            </div>
+                        </li>
+
                         @foreach(App\Category::allToAccess(true) as $cat)
                             <li>
                                 <a href="{{ route('owners.index', 'category_'.$cat->id) }}">{{ $cat->name }}{!! !$cat->isDefault() ? ' <small><i class="fa fa-plus text-theme m-l-5"></i></small>':'' !!}</a>

@@ -54,7 +54,10 @@ class Category extends Model
                     ->where('parent_id', '=', null)
                     ->get()
                     ->merge(
-                        auth()->user()->categories()
+                        auth()
+                            ->user()
+                            ->company
+                            ->categories()
                             ->where('parent_id', '=', null)
                             ->get()
                     );
@@ -62,7 +65,10 @@ class Category extends Model
                 $results = User::getAdmin()
                     ->categories
                     ->merge(
-                        auth()->user()->categories
+                        auth()
+                            ->user()
+                            ->company
+                            ->categories
                     );
             }
         }

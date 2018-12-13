@@ -68,7 +68,11 @@
                                                     <input name="categories[]" value="{{ $cat->id }}" type="checkbox" id="cat_{{ $cat->id }}" />
                                                 @endif
                                             @else
-                                                <input name="categories[]" value="{{ $cat->id }}" type="checkbox" id="cat_{{ $cat->id }}" />
+                                                @if(isset($category))
+                                                    <input name="categories[]" value="{{ $cat->id }}" type="checkbox" id="cat_{{ $cat->id }}"{{ $category->id == $cat->id ? ' checked':'' }} />
+                                                @else
+                                                    <input name="categories[]" value="{{ $cat->id }}" type="checkbox" id="cat_{{ $cat->id }}" />
+                                                @endif
                                             @endif
                                             <label for="cat_{{ $cat->id }}">{{ $cat->name }}</label>
                                         </div>
@@ -85,7 +89,7 @@
                             <div class="clearfix">
                                 <input type="submit" class="btn btn-sm btn-green float-left" value="Сохранить">
                                 @if(isset($field))
-                                    <a href="{{ route('fields.destroy', $field->id) }}" data-click="swal-warning" data-title="Подтвердите действие" data-text="Удалить поле {{ $field->name }}?" data-classbtn="danger" data-actionbtn="Удалить" data-type="error" class="btn btn-sm btn-danger float-right">Удалить</a>
+                                    <a href="{{ route('fields.destroy', 'field_'.$field->id) }}" data-click="swal-warning" data-title="Подтвердите действие" data-text="Удалить поле {{ $field->name }}?" data-classbtn="danger" data-actionbtn="Удалить" data-type="error" class="btn btn-sm btn-danger float-right">Удалить</a>
                                 @endif
                             </div>
                         </div>

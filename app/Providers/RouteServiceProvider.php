@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Category;
 use App\Company;
+use App\Field;
 use App\Owner;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -42,6 +43,10 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('owner_str_id', function ($value) {
             return Owner::findOrFail(str_replace('owner_', '', $value));
+        });
+
+        Route::bind('field_str_id', function ($value) {
+            return Field::findOrFail(str_replace('field_', '', $value));
         });
 
         $this->userAccess();

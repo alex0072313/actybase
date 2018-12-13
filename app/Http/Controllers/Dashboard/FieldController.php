@@ -26,8 +26,11 @@ class FieldController extends DashboardController
         $this->title = 'Дополнительные поля';
 
         if($category->name){
+            $this->data['category'] = $category;
             $fields = $category->fields;
+            $this->pagetitle_desc = $category->name;
         }else{
+            $this->pagetitle_desc = 'Все категории';
             $fields = Field::all();
         }
 
@@ -41,10 +44,15 @@ class FieldController extends DashboardController
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Category $category)
     {
         $this->view = 'pages.field.form';
         $this->title = 'Создание нового поля';
+
+        if($category){
+            $this->pagetitle_desc = $category->name;
+            $this->data['category'] = $category;
+        }
 
         return $this->render();
     }

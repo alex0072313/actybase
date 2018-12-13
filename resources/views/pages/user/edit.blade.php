@@ -126,7 +126,7 @@
                         <div class="form-group row">
                             <label class="col-form-label col-md-3">Новый пароль</label>
                             <div class="col-md-9">
-                                <input name="password" data-toggle="password" data-placement="before" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" type="password" placeholder="Введите новый пароль"/>
+                                <input name="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" type="password" placeholder="Введите новый пароль"/>
                                 @if($errors->has('password'))
                                     <div class="invalid-feedback d-block">
                                         {{ $errors->first('password') }}
@@ -138,7 +138,7 @@
                         <div class="form-group row">
                             <label class="col-form-label col-md-3">Повторите пароль</label>
                             <div class="col-md-9">
-                                <input name="password_confirmation" data-toggle="password" data-placement="before" id="password_confirmation" name="password_confirmation" class="form-control{{ $errors->has('password_confirmation') ? ' is-invalid' : '' }}" type="password" placeholder="Повторите пароль" />
+                                <input name="password_confirmation" id="password_confirmation" name="password_confirmation" class="form-control{{ $errors->has('password_confirmation') ? ' is-invalid' : '' }}" type="password" placeholder="Повторите пароль" />
                                 @if($errors->has('password_confirmation'))
                                     <div class="invalid-feedback d-block">
                                         {{ $errors->first('password_confirmation') }}

@@ -1,11 +1,11 @@
-<li class="dropdown">
-    <a href="javascript:;" data-toggle="dropdown" class="dropdown-toggle icon">
-        <i class="material-icons">inbox</i>
-        <span class="label">{{ $notifications->count() }}</span>
-    </a>
-    <ul class="dropdown-menu media-list dropdown-menu-right">
-        <li class="dropdown-header">Уведомления ({{ $notifications->count() }})</li>
-        @if($notifications->count() > 0)
+@if($notifications->count() > 0)
+    <li class="dropdown">
+        <a href="javascript:;" data-toggle="dropdown" class="dropdown-toggle icon">
+            <i class="material-icons">inbox</i>
+            <span class="label">{{ $notifications->count() }}</span>
+        </a>
+        <ul class="dropdown-menu media-list dropdown-menu-right">
+            <li class="dropdown-header">Уведомления ({{ $notifications->count() }})</li>
             @foreach($notifications as $notification)
                 <li class="media">
                     <a href="javascript:;">
@@ -32,10 +32,6 @@
                     </a>
                 </li>
             @endforeach
-        @else
-            <li class="text-center width-300 p-b-10">
-                Новых нет
-            </li>
-        @endif
-    </ul>
-</li>
+        </ul>
+    </li>
+@endif
