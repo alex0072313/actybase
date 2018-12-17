@@ -167,6 +167,8 @@ return [
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
 
+        App\Providers\FieldProvider::class
+
     ],
 
     /*

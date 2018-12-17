@@ -10,7 +10,7 @@ class Field extends Model
 
     public function type()
     {
-        return $this->belongsTo(Fieldtype::class);
+        return $this->hasOne(Fieldtype::class, 'id', 'fieldtype_id');
     }
 
     public function categories()

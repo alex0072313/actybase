@@ -44,5 +44,10 @@ class Owner extends Model
         return $this->hasMany(Image::class);
     }
 
+    public function files()
+    {
+        return $this->hasMany(File::class);
+    }
+
 
 }

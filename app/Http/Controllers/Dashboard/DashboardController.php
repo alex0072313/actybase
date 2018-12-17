@@ -36,6 +36,15 @@ abstract class DashboardController extends ParentController
         return view($this->view)->with($this->data);
     }
 
+    public function json($data = [])
+    {
+        if($data){
+            $this->data = array_merge($this->data, $data);
+        }
+
+        return response()->json($this->data);
+    }
+
     protected function checkUser()
     {
         $this->middleware(function ($request, $next) {

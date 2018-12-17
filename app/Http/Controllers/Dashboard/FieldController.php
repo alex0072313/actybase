@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\File;
+use App\Owner;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Field;
@@ -181,5 +183,59 @@ class FieldController extends DashboardController
                     'msg'=> 'Вы только что удалили поле '.$field->name
                 ]);
         }
+    }
+
+    public function getFieldsForOwner(Owner $owner, Category $category)
+    {
+        $category_fields = Category::find($category->id ? $category->id : request()->get('category_id'))->fields;
+
+        $fields = $category_fields->map(function ($field) use ($owner){
+            $fieldcontent = $owner->fields()->where('field_id', $field->id)->first();
+
+            $data = [];
+
+            if($field->type->type == 'files'){
+                foreach ($owner->files as $file){
+                    $data['files'][$file->id] = $file->filename;
+                }
+            }
+
+            $data['label'] = $field->name;
+            $data['name'] = 'field['.$field->id.']';
+            if($fieldcontent){
+                $data['value'] = $fieldcontent->content;
+                $data['data'] = $fieldcontent->data;
+            }
+
+            return view('includes.field.field_'.$field->type->type)
+                ->with($data)
+                ->render();
+        });
+
+        return $fields;
+    }
+
+    public function getForOwner(Owner $owner, Category $category)
+    {
+        $this->data['fields'] = $this->getFieldsForOwner($owner, $category);
+        return $this->json();
+    }
+
+    public function uploadFiles(Request $request)
+    {
+        $this->data['files'] = [[
+            'name' => $request->file('uploads')->getClientOriginalName(),
+            'size' => $request->file('uploads')->getClientSize()
+        ]];
+        return $this->json();
+    }
+
+    public function removeExistFile(File $file)
+    {
+        if($file->delete()){
+            $this->data['success']['filename'] = $file->filename;
+        }
+
+        return $this->json();
     }
 }

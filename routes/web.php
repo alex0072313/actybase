@@ -75,6 +75,12 @@ Route::middleware('auth')->group(function () {
     Route::get('fields/{category_str_id?}', 'Dashboard\FieldController@index')->name('fields.index');
     Route::get('fields/{category_str_id}/create', 'Dashboard\FieldController@create')->name('fields.create_in_cat');
     Route::get('fields/{field_str_id}/destroy', 'Dashboard\FieldController@destroy')->name('fields.destroy');
+    Route::post('fields/get_for_owner/{owner_str_id?}', 'Dashboard\FieldController@getForOwner')->name('fields.get_for_owner');
+
+    Route::post('fields/upload_files/{owner_str_id}', 'Dashboard\FieldController@uploadFiles')->name('fields.upload_files');
+
+    Route::post('fields/remove_exist_file/{file}', 'Dashboard\FieldController@removeExistFile')->name('fields.rm_exist_file');
+
     Route::resource('fields', 'Dashboard\FieldController')
         ->except(['index', 'create', 'destroy'])
         ->parameters([

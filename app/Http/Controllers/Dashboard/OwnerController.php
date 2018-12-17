@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Category;
+use App\Field;
+use App\Fieldtype;
+use App\File;
 use App\Image;
 use App\Owner;
 use Illuminate\Http\Request;
@@ -44,7 +47,7 @@ class OwnerController extends DashboardController
     public function create(Category $category)
     {
         $this->view = 'pages.owner.form';
-        $this->title = 'Добавление нового обьекта';
+        $this->title = 'Добавление обьекта';
 
         if($category){
             $this->pagetitle_desc = $category->name;
@@ -82,6 +85,9 @@ class OwnerController extends DashboardController
             //Изображения
             $this->images($owner);
 
+            //Поля
+            $this->fields($owner);
+
             return redirect()
                 ->route('owners.index', 'category_'.$owner->category->id)
                 ->with('gritter', [
@@ -115,13 +121,14 @@ class OwnerController extends DashboardController
 
         $this->data['owner'] = $owner;
 
+        $this->data['fields'] = app('App\Http\Controllers\Dashboard\FieldController')->getFieldsForOwner($owner, $owner->category);
         return $this->render();
     }
     public function update(Request $request, Owner $owner)
     {
         $validate = Validator::make($request->all(), [
             'name' => 'required|max:255|min:3',
-            'category_id' => 'required',
+            //'category_id' => 'required',
         ]);
 
         if($validate->fails()){
@@ -130,10 +137,6 @@ class OwnerController extends DashboardController
                 ->withErrors($validate)
                 ->withInput()
                 ->with('error', 'Ошибка при обновлении обьекта, проверьте форму!');
-        }
-
-        if($request->input('category_id') == 0){
-            $request->request->set('category_id', null);
         }
 
         if($company = auth()->user()->company){
@@ -148,6 +151,9 @@ class OwnerController extends DashboardController
 
             //Изображения
             $this->images($owner);
+
+            //Поля
+            $this->fields($owner);
 
             return redirect()
                 ->route('owners.index')
@@ -189,6 +195,35 @@ class OwnerController extends DashboardController
                 $owner->images()->save(new Image(['file' => $image_upload, 'pos' => $pos]));
             }
         }
+    }
+
+    protected function fields(Owner $owner)
+    {
+        if($fields = request()->input('field')){
+            foreach ($fields as $field_id => $field_val){
+
+                if($owner->fields()->where('field_id', $field_id)->count()){
+                    $owner->fields()->where('field_id', $field_id)->update([
+                        'content' => $field_val,
+                    ]);
+                }else{
+                    $owner->fields()->create([
+                        'field_id' => $field_id,
+                        'content' => $field_val,
+                    ]);
+                }
+            }
+        }
+
+        //файлы
+        if($files = request()->file('field')){
+            foreach ($files as $_files){
+                foreach ($_files as $file_upload){
+                    $owner->files()->save(new File(['file' => $file_upload]));
+                }
+            }
+        }
+
     }
 
 }
