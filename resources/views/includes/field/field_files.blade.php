@@ -18,6 +18,19 @@
                     </ul>
                 </div>
             @endif
+
+            <div class="files_load d-none">
+                <div class="m-b-10 f-s-10">
+                    <b class="text-inverse text-uppercase">Будут загружены:</b>
+                    <a href="javascript:;" class="btn btn-danger btn-xs ml-2 cancel">Отмена</a>
+                </div>
+                <div class="files_list card">
+                    <ul class="list-group list-group-flush">
+
+                    </ul>
+                </div>
+            </div>
+
             <input type="file" multiple name="{{ $name }}[]" value="" class="form-control fileupload d-none">
             <button class="btn btn-green btn-xs">Добавить файл(ы)</button>
         </div>

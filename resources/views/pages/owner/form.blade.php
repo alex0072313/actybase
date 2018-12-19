@@ -11,6 +11,7 @@
     <script src="/assets/plugins/bootstrap-wysihtml5/dist/bootstrap3-wysihtml5.all.min.js"></script>
 
     <script src="/assets/js/photoboard.js"></script>
+    <script src="/assets/js/field_files.js"></script>
 
     <script>
         if ($('#owner_cat_select').length) {
@@ -63,21 +64,7 @@
         }
         bild_htmltext();
 
-        //files
-
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
-        $('.fileupload').each(function () {
-
-
-        });
-
         //
-
         function bild_owner_field_form(fields) {
             var html = '<div class="panel panel-inverse owner_field">' +
                 '<div class="panel-heading">' +
@@ -123,7 +110,7 @@
         @endif
 
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-12 col-xl-6">
                 <!-- begin panel -->
                 <div class="panel panel-inverse primary_info">
                     <div class="panel-heading">
@@ -219,19 +206,9 @@
                     </div>
                 @endif
 
-                <div class="clearfix">
-                    <input type="submit" class="btn btn-sm btn-green float-left" value="Сохранить">
-                    @if(isset($owner))
-                        <a href="{{ route('owners.destroy', 'owner_'.$owner->id) }}" data-click="swal-warning"
-                           data-title="Подтвердите действие"
-                           data-text="Удалить обьект {{ $owner->name }}{{ $owner->childs() ? ' и его потомков ('.$owner->childs()->count().')' : '' }}?"
-                           data-classbtn="danger" data-actionbtn="Удалить" data-type="error"
-                           class="btn btn-sm btn-danger float-right">Удалить</a>
-                    @endif
-                </div>
             </div>
 
-            <div class="col-lg-6">
+            <div class="col-lg-12 col-xl-6">
                 <!-- begin panel -->
                 <div class="panel panel-inverse">
                     <div class="panel-heading">
@@ -271,7 +248,19 @@
 
                 </div>
             </div>
+        </div>
 
+        <div class="row">
+            <div class="col-lg-12 col-xl-6">
+                <input type="submit" class="btn btn-sm btn-green float-left" value="Сохранить">
+                @if(isset($owner))
+                    <a href="{{ route('owners.destroy', 'owner_'.$owner->id) }}" data-click="swal-warning"
+                       data-title="Подтвердите действие"
+                       data-text="Удалить обьект {{ $owner->name }}{{ $owner->childs() ? ' и его потомков ('.$owner->childs()->count().')' : '' }}?"
+                       data-classbtn="danger" data-actionbtn="Удалить" data-type="error"
+                       class="btn btn-sm btn-danger float-right">Удалить</a>
+                @endif
+            </div>
         </div>
 
     </form>
