@@ -39,6 +39,7 @@
                             <th width="1%" data-orderable="false"></th>
                             <th class="text-nowrap">Название</th>
                             <th class="text-nowrap">Категория</th>
+                            <th width="1%" data-orderable="false"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -48,6 +49,9 @@
                                 <td width="1%" class="with-img"><img src="../assets/img/user/user-1.jpg" class="img-rounded height-30" /></td>
                                 <td><a href="{{ route('owners.edit', 'owner_'.$owner->id) }}" class="text-green">{{ $owner->name }}</a></td>
                                 <td>{{ $owner->category->name }}</td>
+                                <td>
+                                    <a href="{{ route('categories.edit', $category->id) }}" class="btn btn-xs m-r-2 btn-danger"><i class="fas fa-xs fa-fw fa-trash-alt"></i></a>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
