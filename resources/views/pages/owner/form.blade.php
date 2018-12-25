@@ -57,6 +57,7 @@
                         }
 
                         bild_htmltext();
+                        fields_init();
                     }
                 });
             });

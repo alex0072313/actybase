@@ -1,6 +1,5 @@
-document.addEventListener('DOMContentLoaded', function () {
+function fields_init() {
     var file_widzets = $('.fields_upload_widzet');
-
     file_widzets.each(function () {
         var widzet = $(this),
             file_field = widzet.find('input[type=\"file\"]'),
@@ -41,20 +40,20 @@ document.addEventListener('DOMContentLoaded', function () {
                         dataType: 'JSON',
                         success: function (response) {
                             widzet.removeClass('loader');
-                            if(response.success){
+                            if (response.success) {
                                 link_box.remove();
 
                                 $.gritter.add({
-                                    title:"Удаление файла",
-                                    text:"Файл "+response.success.filename+" был успешно удален!",
-                                    time:8000,
+                                    title: "Удаление файла",
+                                    text: "Файл " + response.success.filename + " был успешно удален!",
+                                    time: 8000,
                                 });
 
-                            }else{
+                            } else {
                                 $.gritter.add({
-                                    title:"Удаление файла",
-                                    text:"Ошибка при удалении файла!",
-                                    time:8000,
+                                    title: "Удаление файла",
+                                    text: "Ошибка при удалении файла!",
+                                    time: 8000,
                                 });
                             }
                         }
@@ -64,11 +63,11 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
 
-        function getFiles(){
+        function getFiles() {
             if (window.File && window.FileList && window.FileReader) {
                 var files = event.target.files;
 
-                if(files.length){
+                if (files.length) {
                     files_load.removeClass('d-none');
                     files_load.find('.list-group').html('');
                 }
@@ -88,10 +87,10 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
-        function addFile(filename){
-            var item =  '<li class="list-group-item bg-grey-transparent-1 f-s-12 py-0 pr-0 d-flex justify-content-between">' +
-                            '<div class="name">'+filename+'</div>' +
-                        '</li>';
+        function addFile(filename) {
+            var item = '<li class="list-group-item bg-grey-transparent-1 f-s-12 py-0 pr-0 d-flex justify-content-between">' +
+                '<div class="name">' + filename + '</div>' +
+                '</li>';
 
             files_load.find('.list-group').append(item);
         }
@@ -100,4 +99,6 @@ document.addEventListener('DOMContentLoaded', function () {
         initUpload();
 
     });
-});
+}
+
+fields_init();
