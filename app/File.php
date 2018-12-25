@@ -51,6 +51,11 @@ class File extends Model
         return $this->hasOne(Owner::class, 'id', 'owner_id');
     }
 
+    public function field()
+    {
+        return $this->hasOne(Field::class, 'id', 'field_id');
+    }
+
     protected function saveFile(){
         $filename_without_ext = pathinfo($this->filename, PATHINFO_FILENAME);
 

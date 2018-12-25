@@ -1,3 +1,21 @@
+@push('css')
+    <link href="/assets/plugins/DataTables/media/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="/assets/plugins/DataTables/extensions/Responsive/css/responsive.bootstrap.min.css" rel="stylesheet" />
+@endpush
+
+@push('js')
+    <script src="/assets/plugins/DataTables/media/js/jquery.dataTables.js"></script>
+    <script src="/assets/plugins/DataTables/media/js/dataTables.bootstrap.min.js"></script>
+    <script src="/assets/plugins/DataTables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+    <script>
+
+        $("#data-table-default").DataTable({
+            responsive:!0
+        });
+        
+    </script>
+@endpush
+    
 @extends('layouts.layout')
 
 @section('content')
@@ -14,11 +32,27 @@
 
             <!-- begin panel-body -->
             <div class="panel-body">
-                @foreach($owners as $owner)
-                    <div class="box">
-                        <a href="{{ route('owners.edit', 'owner_'.$owner->id) }}">{{ $owner->name }}</a>
-                    </div>
-                @endforeach
+                <table id="data-table-default" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th width="1%"></th>
+                            <th width="1%" data-orderable="false"></th>
+                            <th class="text-nowrap">Название</th>
+                            <th class="text-nowrap">Категория</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($owners as $owner)
+                            <tr class="odd gradeX">
+                                <td width="1%" class="f-s-600 text-inverse">ID#{{ $owner->id}}</td>
+                                <td width="1%" class="with-img"><img src="../assets/img/user/user-1.jpg" class="img-rounded height-30" /></td>
+                                <td><a href="{{ route('owners.edit', 'owner_'.$owner->id) }}" class="text-green">{{ $owner->name }}</a></td>
+                                <td>{{ $owner->category->name }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
             </div>
             <!-- end panel-body -->
         </div>

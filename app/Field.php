@@ -23,4 +23,9 @@ class Field extends Model
         return $this->hasMany(Fieldcontent::class);
     }
 
+    public function files()
+    {
+        return $this->hasMany(File::class);
+    }
+
 }

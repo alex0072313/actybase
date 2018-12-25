@@ -75,9 +75,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 for (let i = 0; i < files.length; i++) {
                     var file = files[i];
-                    var file_name = i + '-' +file.name;
 
-                    if (!file.type.match('image')) continue;
+                    //if (!file.type.match('image')) continue;
                     var picReader = new FileReader();
                     picReader.addEventListener('load', function (event) {
                         addFile(files[i].name);

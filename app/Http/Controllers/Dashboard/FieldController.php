@@ -195,7 +195,7 @@ class FieldController extends DashboardController
             $data = [];
 
             if($field->type->type == 'files'){
-                foreach ($owner->files as $file){
+                foreach ($owner->files()->where('field_id', $field->id)->get() as $file){
                     $data['files'][$file->id] = $file->filename;
                 }
             }

@@ -17,7 +17,9 @@ class CreateFilesTable extends Migration
             $table->increments('id');
 
             $table->integer('owner_id')->unsigned()->index()->nullable();
+            $table->integer('field_id')->unsigned()->index()->nullable();
             $table->foreign('owner_id')->references('id')->on('owners')->onDelete('cascade');
+            $table->foreign('field_id')->references('id')->on('fields')->onDelete('cascade');
 
             $table->integer('pos')->default(0);
             $table->string('filename');

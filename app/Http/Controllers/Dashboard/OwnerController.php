@@ -217,9 +217,10 @@ class OwnerController extends DashboardController
 
         //файлы
         if($files = request()->file('field')){
-            foreach ($files as $_files){
+            foreach ($files as $field_id => $_files){
                 foreach ($_files as $file_upload){
-                    $owner->files()->save(new File(['file' => $file_upload]));
+                    $file = Field::find($field_id)->files()->create(['file' => $file_upload]);
+                    $owner->files()->save($file);
                 }
             }
         }
