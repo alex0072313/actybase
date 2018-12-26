@@ -30,16 +30,18 @@ class OwnerController extends DashboardController
             $this->pagetitle_desc = $category->name;
 
             $this->data['category'] = $category;
-            $this->data['owners'] = Auth::user()
+            $owners = Auth::user()
                 ->company
                 ->owners()
                 ->where('category_id', $category->id)
                 ->get();
         }else{
-            $this->data['owners'] = Auth::user()
+            $owners = Auth::user()
                 ->company
                 ->owners;
         }
+
+        $this->data['owners'] = $owners;
 
         return $this->render();
     }
