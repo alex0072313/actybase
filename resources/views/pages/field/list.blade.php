@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <a href="{{ isset($category) ? route('fields.create_in_cat', 'category_'.$category->id) : route('fields.create') }}" class="btn btn-green btn-lg mb-4">Добавить новое поле</a>
+    <a href="{{ isset($category) ? route('fields.create_in_cat', 'category_'.$category->id) : route('fields.create') }}" class="btn btn-green btn-lg mb-4"><i class="fas fa-fw fa-server"></i> Добавить новое поле</a>
 
     @php
         $list_categories = App\Category::allToAccess(true);
@@ -12,6 +12,7 @@
         <!-- Example single danger button -->
         <div class="btn-group mb-4 ml-2">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-fw fa-folder-open"></i>
                 @if(isset($category))
                     Категория полей: {{ $category->name }}
                 @else
@@ -67,8 +68,8 @@
                                     @endphp
                                 </td>
                                 <td class="with-btn" nowrap>
-                                    <a href="{{ route('fields.edit', 'field_'.$field->id) }}" class="btn btn-sm btn-green m-r-2">Изменить</a>
-                                    <a href="{{ route('fields.destroy', 'field_'.$field->id) }}" data-click="swal-warning" data-title="Подтвердите действие" data-text="Удалить поле {{ $field->name }}?" data-classbtn="danger" data-actionbtn="Удалить" data-type="error" class="btn btn-sm btn-danger">Удалить</a>
+                                    <a href="{{ route('fields.edit', 'field_'.$field->id) }}" class="btn btn-xs m-r-2 btn-green"><i class="far fa-xs fa-fw fa-edit"></i></a>
+                                    <a href="{{ route('fields.destroy', 'field_'.$field->id) }}" data-click="swal-warning" data-title="Подтвердите действие" data-text="Удалить поле {{ $field->name }}?" data-classbtn="danger" data-actionbtn="Удалить" data-type="error" class="btn btn-xs btn-danger"><i class="fas fa-xs fa-fw fa-trash-alt"></i></a>
                                 </td>
                             </tr>
                         @endforeach

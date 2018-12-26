@@ -16,7 +16,7 @@ class Fieldcontent extends Model
 
     public function field()
     {
-        return $this->hasOne(Field::class);
+        return $this->belongsTo(Field::class);
     }
 
 }

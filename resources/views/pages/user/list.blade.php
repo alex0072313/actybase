@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <a href="{{ route('user.add') }}" class="btn btn-green btn-lg mb-4">Добавить менеджера</a>
+    <a href="{{ route('user.add') }}" class="btn btn-green btn-lg mb-4"><i class="fa fa-users"></i> Добавить менеджера</a>
 
     @if($managers)
         <!-- begin panel -->
@@ -40,8 +40,8 @@
                                 </td>
                                 <td>{{ $manager->email }}</td>
                                 <td class="with-btn" nowrap>
-                                    <a href="{{ route('user.edit', $manager->id) }}" class="btn btn-sm btn-green m-r-2">Профиль</a>
-                                    <a href="{{ route('users.destroy', $manager->id) }}" data-click="swal-warning" data-title="Подтвердите действие" data-text="Удалить пользователя {{ $manager->name }}?" data-classbtn="danger" data-actionbtn="Удалить" data-type="error" class="btn btn-sm btn-danger">Удалить</a>
+                                    <a href="{{ route('user.edit', $manager->id) }}" class="btn btn-xs m-r-2 btn-green"><i class="far fa-xs fa-fw fa-edit"></i></a>
+                                    <a href="{{ route('users.destroy', $manager->id) }}" data-click="swal-warning" data-title="Подтвердите действие" data-text="Удалить пользователя {{ $manager->name }}?" data-classbtn="danger" data-actionbtn="Удалить" data-type="error" class="btn btn-xs btn-danger"><i class="fas fa-xs fa-fw fa-trash-alt"></i></a>
                                 </td>
                             </tr>
                         @endforeach

@@ -63,7 +63,8 @@
                 <li class="has-sub">
                     <a href="javascript:;">
                         <b class="caret"></b>
-                        <i class="material-icons">business</i>
+                        {{--<i class="material-icons">business</i>--}}
+                        <i class="far fa-fw fa-building"></i>
                         <span>Обьекты</span>
                     </a>
                     <ul class="sub-menu">

@@ -43,9 +43,10 @@
                                 <td>{{ $user->email }}</td>
                                 <td><a href="{{ route('_company_edit', $user->company->id) }}" class="text-green">{{ $user->company->name }}</a></td>
                                 <td>{{ $user->roleName() }}</td>
+
                                 <td class="with-btn" nowrap>
-                                    <a href="{{ route('_user_edit', $user->id) }}" class="btn btn-sm btn-green m-r-2">Изменить</a>
-                                    <a href="{{ route('_user_destroy', $user->id) }}" data-click="swal-warning" data-title="Подтвердите действие" data-text="Удалить пользователя {{ $user->name }}?" data-classbtn="danger" data-actionbtn="Удалить" data-type="error" class="btn btn-sm btn-danger">Удалить</a>
+                                    <a href="{{ route('_user_edit', $user->id) }}" class="btn btn-xs m-r-2 btn-green"><i class="far fa-xs fa-fw fa-edit"></i></a>
+                                    <a href="{{ route('_user_destroy', $user->id) }}" data-click="swal-warning" data-title="Подтвердите действие" data-text="Удалить пользователя {{ $user->name }}?" data-classbtn="danger" data-actionbtn="Удалить" data-type="error" class="btn btn-xs btn-danger"><i class="fas fa-xs fa-fw fa-trash-alt"></i></a>
                                 </td>
                             </tr>
                         @endforeach
