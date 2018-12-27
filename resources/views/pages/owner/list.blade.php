@@ -20,7 +20,7 @@
     <script src="/assets/plugins/DataTables/extensions/FixedHeader/js/dataTables.fixedHeader.min.js"></script>
     <script>
 
-        $("#data-table-default").DataTable({
+        var table = $("#data-table-default").DataTable({
             responsive: true,
             paging: false,
             bInfo : false,
@@ -45,9 +45,31 @@
                         1: '1 обьект скопирован'
                     }
                 }
-
-            }
+            },
+            //dom: '<"toolbar">frtip'
         });
+
+        var checkboxes = '<div id="data-table-default-checkboxes" class="clearfix pt-2">';
+            checkboxes += '<div class="pull-left clearfix bg-grey-transparent-1 rounded px-2 pb-2">';
+                @foreach($fields_names as $field_id => $field_name)
+                    checkboxes += '<div class="checkbox checkbox-css pull-left{{ $loop->index ? ' ml-3' :'' }}">' +
+                                        '<input class="form-check-input" type="checkbox" data-column="{{ $loop->index + 4 }}" name="remember" checked id="table_filter_{{ $field_id }}" >' +
+                                        '<label for="table_filter_{{ $field_id }}">' +
+                                            '{{ $field_name }}' +
+                                        '</label>' +
+                                    '</div>';
+                @endforeach
+
+            checkboxes += '</div>';
+        checkboxes += '</div>';
+
+        $("#data-table-default").before(checkboxes);
+
+        $('#data-table-default-checkboxes .form-check-input').on('change', function () {
+
+            var column = table.column( $(this).attr('data-column') );
+            column.visible( ! column.visible() );
+        } );
         
     </script>
 @endpush
@@ -63,7 +85,6 @@
     @endphp
 
     @if($list_categories->count())
-        <!-- Example single danger button -->
         <div class="btn-group mb-4 ml-2">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-fw fa-folder-open"></i>
@@ -78,10 +99,12 @@
                     <a class="dropdown-item" href="{{ route('owners.index') }}">Все</a>
                 @endif
                 @foreach($list_categories as $cat)
-                    @if(isset($category))
-                        @continue($category->id == $cat->id)
-                    @endif
-                    <a class="dropdown-item" href="{{ route('owners.index', 'category_'.$cat->id) }}">{{ $cat->name }}</a>
+                    <a class="dropdown-item d-block clearfix{{ (isset($category) && $category->id == $cat->id) ? ' bg-grey-lighter' :'' }}" href="{{ route('owners.index', 'category_'.$cat->id) }}">
+                        <div class="pull-left mr-3">{{ $cat->name }}</div>
+                        @if($category_by_owners[$cat->id])
+                            <div class="font-weight-bold text-green pull-right">{{ $category_by_owners[$cat->id] }}</div>
+                        @endif
+                    </a>
                 @endforeach
             </div>
         </div>
@@ -89,27 +112,18 @@
 
     <a href="{{ isset($category) ? route('fields.index', 'category_'.$category->id) : route('fields.index') }}" class="btn btn-default mb-4 ml-2"><i class="fas fa-fw fa-server"></i> Управение доп. полями</a>
 
+    {{--<div class="d-block mb-4 d-flex">--}}
+        {{--<div class="px-2 py-2 ">--}}
+            {{--<i class="fas fa-fw fa-folder-open"></i> Категория обьектов:--}}
+        {{--</div>--}}
+        {{--<div class="btn-group" role="group" aria-label="Категории обьектов">--}}
+            {{--@foreach($category_by_owners as $cat_name => $owners_cnt)--}}
+                {{--<a href="#" class="btn btn-default"> @if($owners_cnt)<span class="label label-theme">{{ $owners_cnt }}</span> @endif{{ $cat_name }}</a>--}}
+            {{--@endforeach--}}
+        {{--</div>--}}
+    {{--</div>--}}
+
     @if($owners)
-
-        {{--@php--}}
-            {{--$fields = [];--}}
-            {{--$field_ = \App\Field::all();--}}
-            {{--$field_types_ = [];--}}
-
-            {{--foreach ($owners as $owner){--}}
-                {{--$field_contents = $owner->fields;--}}
-                {{--foreach ($field_contents as $field_content){--}}
-                    {{--if($field_data = $field_->where('id', $field_content->fileld_id)){--}}
-                        {{--$field_types_[] = $field_data->name;--}}
-                    {{--}--}}
-                    {{--$field = $field_content->field;--}}
-                    {{--$fields[$owner->id][$field->name] = $field_content->content;--}}
-                {{--}--}}
-            {{--}--}}
-
-            {{--dd($field_types_);--}}
-
-        {{--@endphp--}}
 
         <!-- begin panel -->
         <div class="panel panel-inverse">
@@ -126,11 +140,9 @@
                             <th width="1%" data-orderable="false"></th>
                             <th class="text-nowrap">Название</th>
                             <th class="text-nowrap">Категория</th>
-                            {{--@if($fields->first())--}}
-                                {{--@foreach($fields->first() as $field_name => $field_val)--}}
-                                    {{--<th class="text-nowrap">{{ $field_name }}</th>--}}
-                                {{--@endforeach--}}
-                            {{--@endif--}}
+                            @foreach($fields_names as $field_id => $field_name)
+                                <th class="text-nowrap">{{ $field_name }}</th>
+                            @endforeach
                             <th width="1%" data-orderable="false"></th>
                         </tr>
                     </thead>
@@ -138,15 +150,21 @@
                         @foreach($owners as $owner)
                             <tr class="odd gradeX">
                                 <td width="1%" class="f-s-600 text-inverse">{{ $owner->id}}</td>
-                                <td width="1%" class="with-img"><img src="../assets/img/user/user-1.jpg" class="img-rounded height-30" /></td>
+                                <td width="1%" class="with-img">
+                                    <img src="{{ $owner->thumb }}" class="img-rounded rounded-circle" />
+                                </td>
                                 <td><a href="{{ route('owners.edit', 'owner_'.$owner->id) }}" class="text-green">{{ $owner->name }}</a></td>
-                                <td>{{ $owner->category->name }}</td>
+                                <td><a href="{{ route('owners.index', 'category_'.$owner->category->id) }}" class="text-green">{{ $owner->category->name }}</a></td>
 
-                                {{--@if($fields[$owner->id])--}}
-                                    {{--@foreach($fields[$owner->id] as $field_name => $field_val)--}}
-                                        {{--<th class="text-nowrap">{{ $field_name }}</th>--}}
-                                    {{--@endforeach--}}
-                                {{--@endif--}}
+                                @foreach($fields_names as $field_id => $field_name)
+                                    <td width="1%">
+                                        @if(isset($owner->fields_cont[$field_id]))
+                                            {{ $owner->fields_cont[$field_id] }}
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
+                                @endforeach
 
                                 <td width="1%">
                                     <div class="width-60">

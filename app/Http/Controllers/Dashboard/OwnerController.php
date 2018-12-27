@@ -25,6 +25,11 @@ class OwnerController extends DashboardController
 
         $this->pagetitle = 'Обьекты';
 
+        $owners = Auth::user()->company->owners;
+        foreach (Category::allToAccess(true) as $cat){
+            $this->data['category_by_owners'][$cat->id] = $owners->where('category_id', $cat->id)->count();
+        }
+
         if($category->name){
             $this->title = 'Обьекты в категории - '.$category->name;
             $this->pagetitle_desc = $category->name;
@@ -35,11 +40,35 @@ class OwnerController extends DashboardController
                 ->owners()
                 ->where('category_id', $category->id)
                 ->get();
-        }else{
-            $owners = Auth::user()
-                ->company
-                ->owners;
         }
+
+
+        $fields_owners = [];
+        foreach ($owners as $owner){
+            foreach ($owner->fields as $field_content){
+                $field = $field_content->field;
+                $type = $field->type;
+
+                if(($type->type == 'htmltext') || ($type->type == 'files')) continue;
+
+                $this->data['fields_names'][$field->id] = $field->name;
+                $fields_owners[$owner->id][$field->id] = $field_content->content;
+            }
+        }
+
+        $owners = $owners->map(function ($owner) use ($fields_owners){
+            if($thumb = $owner
+                ->images()
+                ->orderBy('pos')
+                ->first())
+            {
+                $owner->thumb = $thumb->th_url(3);
+            }
+            $owner->fields_cont = $fields_owners[$owner->id];
+            return $owner;
+        });
+
+        //dd($owners);
 
         $this->data['owners'] = $owners;
 
